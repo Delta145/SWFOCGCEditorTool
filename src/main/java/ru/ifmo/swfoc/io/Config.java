@@ -37,7 +37,7 @@ public class Config {
         }
     }
 
-    private File findFileIgnoreCase(String filename) throws FileNotFoundException {
+    File findFileIgnoreCase(String filename) throws FileNotFoundException {
         File directory = new File(xmlDirectory);
         File[] contents = directory.listFiles();
         for (File f : contents) {
