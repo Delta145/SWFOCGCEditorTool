@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 @Data
-public class GameEntity {
+public class EditorCore {
     private List<CampaignWrapper> campaigns;
     private XMLCampaignParser campaignParser;
     private XMLGameObjectParser gameObjectParser;
@@ -20,7 +20,7 @@ public class GameEntity {
     private List<Faction> factions;
     private List<TradeRoute> tradeRoutes;
 
-    public GameEntity(Config config) throws FileNotFoundException {
+    public EditorCore(Config config) throws FileNotFoundException {
         this.config = config;
         campaignParser = new XMLCampaignParser(config.getCampaignFile(), config);
         gameObjectParser = new XMLGameObjectParser(config.getGameObjectFile(), config);

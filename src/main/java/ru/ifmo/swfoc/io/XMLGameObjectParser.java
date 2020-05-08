@@ -28,6 +28,7 @@ public class XMLGameObjectParser {
     private List<String> groundCompanies = new ArrayList<>();
     private List<String> starBases = new ArrayList<>();
     private List<Planet> planets = new ArrayList<>();
+    private List<String> heroCompanies = new ArrayList<>();
 
     public XMLGameObjectParser(File file, Config config) {
         processingFile = file;
@@ -69,6 +70,9 @@ public class XMLGameObjectParser {
                             break;
                         case "StarBase":
                             starBases.add(gameObject.getAttribute("Name").getValue());
+                            break;
+                        case "HeroCompany":
+                            heroCompanies.add(gameObject.getAttribute("Name").getValue());
                             break;
                         case "Planet":
                             JAXBContext jaxbContext;

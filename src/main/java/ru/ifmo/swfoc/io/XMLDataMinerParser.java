@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class XMLDataMinerParser {
-    private File processingFile;
+    private final File processingFile;
     private final String typeAttribute = "type";
     private final String filenameAttribute = "filename";
     private final String campaignType = "Campaign";
