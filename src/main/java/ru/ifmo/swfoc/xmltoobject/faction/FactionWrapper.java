@@ -1,4 +1,4 @@
-package ru.ifmo.swfoc.xmltoobject.campaign;
+package ru.ifmo.swfoc.xmltoobject.faction;
 
 import lombok.Data;
 
@@ -10,10 +10,9 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-@XmlRootElement(name = "Campaigns")
+@XmlRootElement(name = "Factions")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CampaignWrapper implements Serializable {
-    private String fileName;
-    @XmlElement(name = "Campaign")
-    private List<Campaign> campaigns;
+public class FactionWrapper implements Serializable {
+    @XmlElement(name = "Faction")
+    private List<Faction> factions;
 }

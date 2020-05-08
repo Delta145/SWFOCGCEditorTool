@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @XmlRootElement(name = "Campaign")
@@ -33,7 +34,7 @@ public class Campaign implements Serializable {
     @XmlElement(name = "Trade_Routes")
     private String Trade_Routes;
     @XmlElement(name = "Home_Location")
-    private ArrayList<String> Home_Location;
+    private List<String> Home_Location;
     @XmlElement(name = "Starting_Active_Player")
     private String Starting_Active_Player;
     @XmlElement(name = "Rebel_Story_Name")
@@ -43,11 +44,11 @@ public class Campaign implements Serializable {
     @XmlElement(name = "Underworld_Story_Name")
     private String Underworld_Story_Name;
     @XmlElement(name = "AI_Player_Control")
-    private ArrayList<String> AI_Player_Control;
+    private List<String> AI_Player_Control;
     @XmlElement(name = "Is_Multiplayer")
     private String Is_Multiplayer;
     @XmlElement(name = "Markup_Filename")
-    private ArrayList<String> Markup_Filename;
+    private List<String> Markup_Filename;
     @XmlElement(name = "Supports_Custom_Settings")
     private String Supports_Custom_Settings;
     @XmlElement(name = "Show_Completed_Tab")
@@ -57,13 +58,13 @@ public class Campaign implements Serializable {
     @XmlElement(name = "AI_Victory_Conditions")
     private String AI_Victory_Conditions;
     @XmlElement(name = "Special_Case_Production")
-    private ArrayList<String> Special_Case_Production;
+    private List<String> Special_Case_Production;
     @XmlElement(name = "Starting_Credits")
-    private ArrayList<String> Starting_Credits;
+    private List<String> Starting_Credits;
     @XmlElement(name = "Starting_Tech_Level")
-    private ArrayList<String> Starting_Tech_Level;
+    private List<String> Starting_Tech_Level;
     @XmlElement(name = "Max_Tech_Level")
-    private ArrayList<String> Max_Tech_Level;
+    private List<String> Max_Tech_Level;
     @XmlElement(name = "Starting_Forces")
-    private ArrayList<String> Starting_Forces;
+    private List<String> Starting_Forces;
 }

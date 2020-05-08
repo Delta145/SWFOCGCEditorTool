@@ -50,4 +50,12 @@ public class Config {
     public File getCampaignFile() throws FileNotFoundException {
         return findFileIgnoreCase(xmlDataMinerParser.getCampaignFile());
     }
+
+    public File getGameObjectFile() throws FileNotFoundException {
+        return findFileIgnoreCase(xmlDataMinerParser.getGameObjectFile());
+    }
+
+    public File getFactionFile() throws FileNotFoundException {
+        return findFileIgnoreCase(xmlDataMinerParser.getFactionFile());
+    }
 }
