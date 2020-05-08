@@ -15,6 +15,7 @@ public class XMLDataMinerParser {
     private final String filenameAttribute = "filename";
     private final String campaignType = "Campaign";
     private final String factionType = "Faction";
+    private final String tradeRouteType = "TradeRoute";
     private final String gameObjectType = "GameObjectType";
 
     public XMLDataMinerParser(File file) {
@@ -23,6 +24,10 @@ public class XMLDataMinerParser {
 
     String getCampaignFile() {
         return getFilenameForType(campaignType);
+    }
+
+    String getTradeRouteFile() {
+        return getFilenameForType(tradeRouteType);
     }
 
     String getGameObjectFile() {

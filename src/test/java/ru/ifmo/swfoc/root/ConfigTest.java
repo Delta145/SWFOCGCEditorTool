@@ -7,6 +7,7 @@ import ru.ifmo.swfoc.xmltoobject.campaign.Campaign;
 import ru.ifmo.swfoc.xmltoobject.campaign.CampaignWrapper;
 import ru.ifmo.swfoc.xmltoobject.faction.Faction;
 import ru.ifmo.swfoc.xmltoobject.planet.Planet;
+import ru.ifmo.swfoc.xmltoobject.traderoute.TradeRoute;
 
 import java.io.FileNotFoundException;
 
@@ -45,5 +46,9 @@ public class ConfigTest {
         System.out.println("All planets: ");
         for (Planet p : gameEntity.getGameObjectParser().getPlanets())
             System.out.printf("\t%s\n", p.getName());
+
+        System.out.println("All trade routes: ");
+        for (TradeRoute tr : gameEntity.getTradeRoutes())
+            System.out.printf("\t%s\n", tr.getName());
     }
 }

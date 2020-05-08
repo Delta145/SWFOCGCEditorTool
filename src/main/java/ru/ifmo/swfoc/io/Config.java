@@ -50,6 +50,9 @@ public class Config {
     public File getCampaignFile() throws FileNotFoundException {
         return findFileIgnoreCase(xmlDataMinerParser.getCampaignFile());
     }
+    public File getTradeRouteFile() throws FileNotFoundException {
+        return findFileIgnoreCase(xmlDataMinerParser.getTradeRouteFile());
+    }
 
     public File getGameObjectFile() throws FileNotFoundException {
         return findFileIgnoreCase(xmlDataMinerParser.getGameObjectFile());

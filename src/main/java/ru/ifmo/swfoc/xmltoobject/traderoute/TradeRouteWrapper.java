@@ -1,4 +1,4 @@
-package ru.ifmo.swfoc.xmltoobject.planet;
+package ru.ifmo.swfoc.xmltoobject.traderoute;
 
 import lombok.Data;
 
@@ -10,9 +10,9 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-@XmlRootElement(name = "Planets")
+@XmlRootElement(name = "TradeRoutes")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PlanetWrapper implements Serializable {
-    @XmlElement(name = "Planet")
-    private List<Planet> planets;
+public class TradeRouteWrapper implements Serializable {
+    @XmlElement(name = "TradeRoute")
+    private List<TradeRoute> tradeRoutes;
 }

@@ -4,7 +4,6 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
-import ru.ifmo.swfoc.xmltoobject.campaign.Campaign;
 import ru.ifmo.swfoc.xmltoobject.campaign.CampaignWrapper;
 
 import javax.xml.bind.JAXBContext;
@@ -24,8 +23,8 @@ public class XMLCampaignParser {
         this.config = config;
     }
 
-    public ArrayList<CampaignWrapper> readAllCampaignFiles() {
-        ArrayList<CampaignWrapper> campaignWrappers = new ArrayList<>();
+    public List<CampaignWrapper> readAllCampaignFiles() {
+        List<CampaignWrapper> campaignWrappers = new ArrayList<>();
 
         SAXBuilder builder = new SAXBuilder();
 
