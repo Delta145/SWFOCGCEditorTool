@@ -4,9 +4,12 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
-import ru.ifmo.swfoc.campaign.Campaign;
-import ru.ifmo.swfoc.campaign.CampaignWrapper;
+import ru.ifmo.swfoc.xmltoobject.campaign.Campaign;
+import ru.ifmo.swfoc.xmltoobject.campaign.CampaignWrapper;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,9 +37,17 @@ public class XMLCampaignParser {
             for (Element node : list) {
                 String campaignFileName = node.getValue();
                 File campaignFile = config.findFileIgnoreCase(campaignFileName);
-                ArrayList<Campaign> campaigns = readAllCampaigns(campaignFile);
-                CampaignWrapper campaignWrapper = new CampaignWrapper(campaigns, campaignFileName);
-                campaignWrappers.add(campaignWrapper);
+                JAXBContext jaxbContext;
+                try {
+                    jaxbContext = JAXBContext.newInstance(CampaignWrapper.class);
+                    Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+                    CampaignWrapper campaigns = (CampaignWrapper) jaxbUnmarshaller.unmarshal(campaignFile);
+                    campaigns.setFileName(campaignFileName);
+                    campaignWrappers.add(campaigns);
+                } catch (JAXBException e) {
+                    e.printStackTrace();
+                }
+
             }
 
         } catch (IOException | JDOMException io) {
@@ -44,29 +55,6 @@ public class XMLCampaignParser {
         }
 
         return campaignWrappers;
-    }
-
-    private ArrayList<Campaign> readAllCampaigns(File file) {
-        ArrayList<Campaign> campaigns = new ArrayList<>();
-
-        SAXBuilder builder = new SAXBuilder();
-
-        try {
-            Document document = builder.build(file);
-            Element rootNode = document.getRootElement();
-            List<Element> list = rootNode.getChildren();
-
-            for (Element node : list) {
-                String campaignName = node.getAttribute("Name").getValue();
-                Campaign campaign = new Campaign(campaignName);
-                campaigns.add(campaign);
-            }
-
-        } catch (IOException | JDOMException io) {
-            System.out.println(io.getMessage());
-        }
-
-        return campaigns;
     }
 
 }

@@ -1,11 +1,9 @@
 package ru.ifmo.swfoc;
 
-import ru.ifmo.swfoc.campaign.Campaign;
-import ru.ifmo.swfoc.campaign.CampaignWrapper;
+import ru.ifmo.swfoc.xmltoobject.campaign.CampaignWrapper;
 import ru.ifmo.swfoc.io.Config;
 import ru.ifmo.swfoc.io.XMLCampaignParser;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 

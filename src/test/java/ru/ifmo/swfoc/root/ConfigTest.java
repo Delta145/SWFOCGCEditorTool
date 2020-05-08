@@ -2,11 +2,10 @@ package ru.ifmo.swfoc.root;
 
 import org.junit.Test;
 import ru.ifmo.swfoc.GameEntity;
-import ru.ifmo.swfoc.campaign.Campaign;
-import ru.ifmo.swfoc.campaign.CampaignWrapper;
 import ru.ifmo.swfoc.io.Config;
+import ru.ifmo.swfoc.xmltoobject.campaign.Campaign;
+import ru.ifmo.swfoc.xmltoobject.campaign.CampaignWrapper;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 public class ConfigTest {
@@ -16,9 +15,11 @@ public class ConfigTest {
         GameEntity gameEntity = new GameEntity(config);
 
         for (CampaignWrapper wrapper : gameEntity.getCampaigns()) {
-            System.out.println(wrapper.getCampaignFile());
+            System.out.println(wrapper.getFileName());
             for (Campaign campaign : wrapper.getCampaigns()) {
                 System.out.printf("\t%s\n", campaign.getName());
+                System.out.printf("\t\t%s\n", campaign.getText_ID());
+                System.out.printf("\t\t%s\n", campaign.getDescription_Text());
             }
         }
 
