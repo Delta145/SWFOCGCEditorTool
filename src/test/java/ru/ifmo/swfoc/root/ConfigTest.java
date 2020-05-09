@@ -1,7 +1,7 @@
 package ru.ifmo.swfoc.root;
 
 import org.junit.Test;
-import ru.ifmo.swfoc.EditorCore;
+import ru.ifmo.swfoc.editor.EditorCore;
 import ru.ifmo.swfoc.io.Config;
 import ru.ifmo.swfoc.xmltoobject.campaign.Campaign;
 import ru.ifmo.swfoc.xmltoobject.campaign.CampaignWrapper;

@@ -1,4 +1,4 @@
-package ru.ifmo.swfoc;
+package ru.ifmo.swfoc.editor;
 
 import lombok.Data;
 import ru.ifmo.swfoc.io.*;
@@ -6,7 +6,6 @@ import ru.ifmo.swfoc.xmltoobject.campaign.CampaignWrapper;
 import ru.ifmo.swfoc.xmltoobject.faction.Faction;
 import ru.ifmo.swfoc.xmltoobject.traderoute.TradeRoute;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
