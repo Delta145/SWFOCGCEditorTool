@@ -25,8 +25,9 @@ public class PlanetConverter {
             .maxStructuresLand(planet.getSpecial_Structures_Land())
             .maxStructuresSpace(planet.getSpecial_Structures_Space());
 
-        if (planet.getTerrain() != null)
+        if (planet.getTerrain() != null && planet.getTerrain().trim().length() > 0) {
             b.terrain(TerrainType.valueOf(planet.getTerrain().trim().toUpperCase()));
+        }
 
         return b.build();
     } 

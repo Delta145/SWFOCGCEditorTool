@@ -13,4 +13,5 @@ public interface GameEntities {
     List<MTradeRoute> getAllTradeRoutes();
     List<MPlanet> getAllPlanets();
     List<String> getAllUnits();
+    void setAllCampaigns(List<MCampaign> campaigns);
 }

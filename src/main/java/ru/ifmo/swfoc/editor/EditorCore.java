@@ -11,30 +11,22 @@ import java.util.List;
 
 @Data
 public class EditorCore {
-    private List<CampaignWrapper> campaigns;
+    private Config config;
+    private DATLoader datLoader;
+    private GameEntities gameEntitiesStore;
     private XMLCampaignLoader campaignParser;
     private XMLGameObjectLoader gameObjectParser;
     private XMLFactionLoader factionParser;
     private XMLTradeRouteLoader tradeRouteParser;
-    private Config config;
-    private List<Faction> factions;
-    private List<TradeRoute> tradeRoutes;
-    private DATLoader datLoader;
 
     public EditorCore(Config config) throws IOException {
         this.config = config;
+        datLoader = new DATLoader(config.getMasterTextFile());
         campaignParser = new XMLCampaignLoader(config.getCampaignFile(), config);
         gameObjectParser = new XMLGameObjectLoader(config.getGameObjectFile(), config);
         factionParser = new XMLFactionLoader(config.getFactionFile(), config);
         tradeRouteParser = new XMLTradeRouteLoader(config.getTradeRouteFile(), config);
         gameObjectParser.readAllGameObjects();
-        campaigns = campaignParser.readAllCampaignFiles();
-        factions = factionParser.readAllFactionFiles();
-        tradeRoutes = tradeRouteParser.readAllTradeRouteFiles();
-        datLoader = new DATLoader(config.getMasterTextFile());
-    }
-
-    public List<CampaignWrapper> getCampaigns() {
-        return campaigns;
+        gameEntitiesStore = new GameEntitiesStore(datLoader, campaignParser, gameObjectParser, factionParser, tradeRouteParser);
     }
 }
