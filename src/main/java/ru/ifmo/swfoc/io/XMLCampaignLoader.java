@@ -5,8 +5,6 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import ru.ifmo.swfoc.xmltoobject.campaign.CampaignWrapper;
-import ru.ifmo.swfoc.xmltoobject.traderoute.TradeRoute;
-import ru.ifmo.swfoc.xmltoobject.traderoute.TradeRouteWrapper;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -16,17 +14,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XMLTradeRouteParser {
+public class XMLCampaignLoader {
     private Config config;
     private File processingFile;
 
-    public XMLTradeRouteParser(File file, Config config) {
+    public XMLCampaignLoader(File file, Config config) {
         processingFile = file;
         this.config = config;
     }
 
-    public List<TradeRoute> readAllTradeRouteFiles() {
-        List<TradeRoute> tradeRoutes = new ArrayList<>();
+    public List<CampaignWrapper> readAllCampaignFiles() {
+        List<CampaignWrapper> campaignWrappers = new ArrayList<>();
 
         SAXBuilder builder = new SAXBuilder();
 
@@ -36,14 +34,15 @@ public class XMLTradeRouteParser {
             List<Element> list = rootNode.getChildren();
 
             for (Element node : list) {
-                String tradeRouteFileName = node.getValue();
-                File tradeRouteFile = config.findFileIgnoreCase(tradeRouteFileName);
+                String campaignFileName = node.getValue();
+                File campaignFile = config.findFileIgnoreCase(campaignFileName);
                 JAXBContext jaxbContext;
                 try {
-                    jaxbContext = JAXBContext.newInstance(TradeRouteWrapper.class);
+                    jaxbContext = JAXBContext.newInstance(CampaignWrapper.class);
                     Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                    TradeRouteWrapper tradeRouteWrapper = (TradeRouteWrapper) jaxbUnmarshaller.unmarshal(tradeRouteFile);
-                    tradeRoutes.addAll(tradeRouteWrapper.getTradeRoutes());
+                    CampaignWrapper campaigns = (CampaignWrapper) jaxbUnmarshaller.unmarshal(campaignFile);
+                    campaigns.setFileName(campaignFileName);
+                    campaignWrappers.add(campaigns);
                 } catch (JAXBException e) {
                     e.printStackTrace();
                 }
@@ -54,6 +53,7 @@ public class XMLTradeRouteParser {
             System.out.println(io.getMessage());
         }
 
-        return tradeRoutes;
+        return campaignWrappers;
     }
+
 }

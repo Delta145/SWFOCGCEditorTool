@@ -9,20 +9,20 @@ import ru.ifmo.swfoc.xmltoobject.faction.Faction;
 import ru.ifmo.swfoc.xmltoobject.planet.Planet;
 import ru.ifmo.swfoc.xmltoobject.traderoute.TradeRoute;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class ConfigTest {
     @Test
-    public void loadPropertiesTest() throws FileNotFoundException {
-        Config config = new Config("/home/gosha/IdeaProjects/SWFOCModddingUltimateTool/settings.properties");
+    public void loadPropertiesTest() throws IOException {
+        Config config = new Config("settings.properties");
         EditorCore editorCore = new EditorCore(config);
 
         for (CampaignWrapper wrapper : editorCore.getCampaigns()) {
             System.out.println(wrapper.getFileName());
             for (Campaign campaign : wrapper.getCampaigns()) {
                 System.out.printf("\t%s\n", campaign.getName());
-                System.out.printf("\t\t%s\n", campaign.getText_ID());
-                System.out.printf("\t\t%s\n", campaign.getDescription_Text());
+                System.out.printf("\t\t%s\n", editorCore.getDatLoader().getValue(campaign.getText_ID()));
+                System.out.printf("\t\t%s\n",  editorCore.getDatLoader().getValue(campaign.getDescription_Text()));
             }
         }
 
@@ -54,5 +54,7 @@ public class ConfigTest {
         System.out.println("All hero companies: ");
         for (String s : editorCore.getGameObjectParser().getHeroCompanies())
             System.out.printf("\t%s\n", s);
+
+
     }
 }

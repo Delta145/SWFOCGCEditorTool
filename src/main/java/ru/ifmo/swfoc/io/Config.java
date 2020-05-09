@@ -6,13 +6,15 @@ import java.util.Properties;
 public class Config {
     private String propertiesPath;
     private File dataMinerFile;
-    private XMLDataMinerParser xmlDataMinerParser;
+    private XMLDataMinerLoader xmlDataMinerLoader;
     private String xmlDirectory;
+    private File masterTextFile;
+
 
     public Config(String path) {
         propertiesPath = path;
         loadProperties();
-        xmlDataMinerParser = new XMLDataMinerParser(dataMinerFile);
+        xmlDataMinerLoader = new XMLDataMinerLoader(dataMinerFile);
     }
 
     private void loadProperties() {
@@ -23,6 +25,8 @@ public class Config {
 
             xmlDirectory = prop.getProperty("swfoc.xml");
             String dataMinerFileName = prop.getProperty("swfoc.dataminerfiles");
+            String datfile = prop.getProperty("swfoc.mastertextfile");
+            masterTextFile = new File(datfile);
 
             File directory = new File(xmlDirectory);
             File[] contents = directory.listFiles();
@@ -47,18 +51,22 @@ public class Config {
         throw new FileNotFoundException(filename + " was not found.");
     }
 
+    public File getMasterTextFile() {
+        return masterTextFile;
+    }
+
     public File getCampaignFile() throws FileNotFoundException {
-        return findFileIgnoreCase(xmlDataMinerParser.getCampaignFile());
+        return findFileIgnoreCase(xmlDataMinerLoader.getCampaignFile());
     }
     public File getTradeRouteFile() throws FileNotFoundException {
-        return findFileIgnoreCase(xmlDataMinerParser.getTradeRouteFile());
+        return findFileIgnoreCase(xmlDataMinerLoader.getTradeRouteFile());
     }
 
     public File getGameObjectFile() throws FileNotFoundException {
-        return findFileIgnoreCase(xmlDataMinerParser.getGameObjectFile());
+        return findFileIgnoreCase(xmlDataMinerLoader.getGameObjectFile());
     }
 
     public File getFactionFile() throws FileNotFoundException {
-        return findFileIgnoreCase(xmlDataMinerParser.getFactionFile());
+        return findFileIgnoreCase(xmlDataMinerLoader.getFactionFile());
     }
 }

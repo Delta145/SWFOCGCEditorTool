@@ -7,6 +7,9 @@ version '1.0'
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -18,4 +21,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
     // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
     compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+
+    implementation name: 'SWFOCDATReader-0.1'
 }

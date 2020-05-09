@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class XMLGameObjectParser {
+public class XMLGameObjectLoader {
     private Config config;
     private File processingFile;
     private List<String> squadrons = new ArrayList<>();
@@ -30,7 +30,7 @@ public class XMLGameObjectParser {
     private List<Planet> planets = new ArrayList<>();
     private List<String> heroCompanies = new ArrayList<>();
 
-    public XMLGameObjectParser(File file, Config config) {
+    public XMLGameObjectLoader(File file, Config config) {
         processingFile = file;
         this.config = config;
     }

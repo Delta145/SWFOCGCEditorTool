@@ -16,11 +16,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XMLFactionParser {
+public class XMLFactionLoader {
     private Config config;
     private File processingFile;
 
-    public XMLFactionParser(File file, Config config) {
+    public XMLFactionLoader(File file, Config config) {
         processingFile = file;
         this.config = config;
     }

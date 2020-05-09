@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class XMLDataMinerParser {
+public class XMLDataMinerLoader {
     private final File processingFile;
     private final String typeAttribute = "type";
     private final String filenameAttribute = "filename";
@@ -18,7 +18,7 @@ public class XMLDataMinerParser {
     private final String tradeRouteType = "TradeRoute";
     private final String gameObjectType = "GameObjectType";
 
-    public XMLDataMinerParser(File file) {
+    public XMLDataMinerLoader(File file) {
         processingFile = file;
     }
 
