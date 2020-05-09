@@ -8,6 +8,6 @@ import ru.ifmo.swfoc.xmltoobject.planet.Planet;
 @Data
 public class MTradeRoute {
     private String name;
-    private Planet pointA;
-    private Planet pointB;
+    private MPlanet pointA;
+    private MPlanet pointB;
 }

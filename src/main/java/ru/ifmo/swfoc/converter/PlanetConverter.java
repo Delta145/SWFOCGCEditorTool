@@ -18,14 +18,16 @@ public class PlanetConverter {
         String[] galactic_position = planet.getGalactic_Position().split(",");
         double x = Double.parseDouble(galactic_position[0]), y = Double.parseDouble(galactic_position[1]), z = Double.parseDouble(galactic_position[2]);
 
-        b.xmlName(planet.getName());
-        b.name(datLoader.getValue(planet.getText_ID()));
-        b.x(x); b.y(y); b.z(z);
-        b.maxSpaceBaseLevel(planet.getMax_Space_Base());
-        b.maxStructuresLand(planet.getSpecial_Structures_Land());
-        b.maxStructuresSpace(planet.getSpecial_Structures_Space());
+        b.xmlName(planet.getName())
+            .name(datLoader.getValue(planet.getText_ID()))
+            .x(x).y(y).z(z)
+            .maxSpaceBaseLevel(planet.getMax_Space_Base())
+            .maxStructuresLand(planet.getSpecial_Structures_Land())
+            .maxStructuresSpace(planet.getSpecial_Structures_Space());
+
         if (planet.getTerrain() != null)
             b.terrain(TerrainType.valueOf(planet.getTerrain().trim().toUpperCase()));
+
         return b.build();
     } 
 }

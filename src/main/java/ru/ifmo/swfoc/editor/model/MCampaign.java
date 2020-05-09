@@ -9,26 +9,27 @@ import java.util.Map;
 @Data
 @Builder
 public class MCampaign {
+    private String fileName;
     private String xmlName;
     private String name;
     private String campaignSet;
-    private int sortOrder;
+    private Integer sortOrder;
     private String description;
-    private double cameraShiftX;
-    private double cameraShiftY;
-    private double cameraDistance;
+    private Double cameraShiftX;
+    private Double cameraShiftY;
+    private Double cameraDistance;
     private List<MPlanet> locations;
     private List<MTradeRoute> tradeRoutes;
     private Map<MFaction, MPlanet> homeLocations;
-    private String singlePlayerActivePlayer;
+    private MFaction singlePlayerActivePlayer;
     private String singlePlayerRebelStory;
     private String singlePlayerEmpireStory;
     private String singlePlayerUnderworldStory;
     private Map<MFaction, String> AI_Player_Control;
-    private boolean isMultiplayer;
+    private Boolean isMultiplayer;
     private Map<MFaction, String> markupFiles;
-    private boolean supportsCustomSettings;
-    private boolean showCompletedTab;
+    private Boolean supportsCustomSettings;
+    private Boolean showCompletedTab;
     private List<String> humanVictoryConditions;
     private List<String> aiVictoryConditions;
     private Map<MPlanet, String> specialCaseProduction;
