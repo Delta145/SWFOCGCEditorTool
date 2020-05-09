@@ -8,9 +8,9 @@ import lombok.Data;
 public class MPlanet {
     private String name;
     private String xmlName;
-    private double x, y, z;
-    private int maxSpaceBaseLevel;
-    private int maxStructuresLand;
-    private int maxStructuresSpace;
+    private Double x, y, z;
+    private Integer maxSpaceBaseLevel;
+    private Integer maxStructuresLand;
+    private Integer maxStructuresSpace;
     private TerrainType terrain;
 }

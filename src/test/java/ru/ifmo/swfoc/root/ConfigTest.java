@@ -55,6 +55,5 @@ public class ConfigTest {
         for (String s : editorCore.getGameObjectParser().getHeroCompanies())
             System.out.printf("\t%s\n", s);
 
-
     }
 }
