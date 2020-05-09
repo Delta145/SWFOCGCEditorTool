@@ -43,7 +43,7 @@ public class GameEntitiesStore implements GameEntities {
         for (Faction f : fs) {
             MFaction mFaction = factionConverter.toMFaction(f);
             factions.add(mFaction);
-            xmlNameFaction.put(mFaction.getName(), mFaction);
+            xmlNameFaction.put(mFaction.getXmlName(), mFaction);
         }
 
         List<Planet> ps = gameObjectParser.getPlanets();
@@ -72,7 +72,6 @@ public class GameEntitiesStore implements GameEntities {
         }
 
     }
-
 
     @Override
     public List<MCampaign> getAllCampaigns() {

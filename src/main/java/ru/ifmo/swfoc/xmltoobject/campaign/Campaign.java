@@ -20,7 +20,7 @@ public class Campaign implements Serializable {
     @XmlElement(name = "Text_ID")
     private String Text_ID;
     @XmlElement(name = "Sort_Order")
-    private int Sort_Order;
+    private Integer Sort_Order;
     @XmlElement(name = "Description_Text")
     private String Description_Text;
     @XmlElement(name = "Camera_Shift_X")
