@@ -3,6 +3,7 @@ package ru.ifmo.swfoc.editor;
 import lombok.Data;
 import ru.ifmo.swfoc.io.*;
 
+import java.io.File;
 import java.io.IOException;
 
 @Data
@@ -24,6 +25,10 @@ public class EditorCore {
         tradeRouteParser = new XMLTradeRouteLoader(config.getTradeRouteFile(), config);
         gameObjectParser.readAllGameObjects();
         gameEntitiesStore = new GameEntitiesStore(datLoader, campaignParser, gameObjectParser, factionParser, tradeRouteParser);
+    }
+
+    public void saveCampaignsToDirectory(File file) {
+
     }
 
 }

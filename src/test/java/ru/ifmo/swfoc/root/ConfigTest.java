@@ -3,7 +3,6 @@ package ru.ifmo.swfoc.root;
 import org.junit.Test;
 import ru.ifmo.swfoc.editor.EditorCore;
 import ru.ifmo.swfoc.editor.GameEntities;
-import ru.ifmo.swfoc.editor.model.MPlanet;
 import ru.ifmo.swfoc.editor.model.MUnit;
 import ru.ifmo.swfoc.io.Config;
 

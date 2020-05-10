@@ -1,6 +1,9 @@
 package ru.ifmo.swfoc.xmltoobject.campaign;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
@@ -8,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @XmlRootElement(name = "Campaign")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Campaign implements Serializable {
@@ -24,11 +30,11 @@ public class Campaign implements Serializable {
     @XmlElement(name = "Description_Text")
     private String Description_Text;
     @XmlElement(name = "Camera_Shift_X")
-    private double Camera_Shift_X;
+    private Double Camera_Shift_X;
     @XmlElement(name = "Camera_Shift_Y")
-    private double Camera_Shift_Y;
+    private Double Camera_Shift_Y;
     @XmlElement(name = "Camera_Distance")
-    private double Camera_Distance;
+    private Double Camera_Distance;
     @XmlElement(name = "Locations")
     private String Locations;
     @XmlElement(name = "Trade_Routes")

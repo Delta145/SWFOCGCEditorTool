@@ -9,8 +9,12 @@ import java.util.Map;
 @Data
 @Builder
 public class MCampaign {
+    private boolean isEdited;
+
     private String fileName;
     private String xmlName;
+    private String textId;
+    private String descriptionId;
     private String name;
     private String campaignSet;
     private Integer sortOrder;

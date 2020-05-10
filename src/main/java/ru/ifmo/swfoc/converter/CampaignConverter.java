@@ -130,27 +130,13 @@ public class CampaignConverter {
         Map<MPlanet, List<FactionUnit>> factionUnitMap = new HashMap<>();
         if (campaign.getStarting_Forces() != null) {
             List<String> starting_forces = campaign.getStarting_Forces();
-            for (String s : starting_forces) {
-                String[] factionPlanetUnit = s.split(",");
-                FactionUnit factionUnit = new FactionUnit(units.get(factionPlanetUnit[2].trim()), factions.get(factionPlanetUnit[0].trim()));
-                MPlanet planet = planets.get(factionPlanetUnit[1].trim());
-
-                List<FactionUnit> list = factionUnitMap.computeIfAbsent(planet, k -> new ArrayList<>());
-                list.add(factionUnit);
-            }
+            fillUnitMap(factionUnitMap, starting_forces);
         }
 
         Map<MPlanet, List<FactionUnit>> specialCaseProduction = new HashMap<>();
         if (campaign.getSpecial_Case_Production() != null) {
             List<String> special_case_production = campaign.getSpecial_Case_Production();
-            for (String s : special_case_production) {
-                String[] factionPlanetUnit = s.split(",");
-                FactionUnit factionUnit = new FactionUnit(units.get(factionPlanetUnit[2].trim()), factions.get(factionPlanetUnit[0].trim()));
-                MPlanet planet = planets.get(factionPlanetUnit[1].trim());
-
-                List<FactionUnit> list = specialCaseProduction.computeIfAbsent(planet, k -> new ArrayList<>());
-                list.add(factionUnit);
-            }
+            fillUnitMap(specialCaseProduction, special_case_production);
         }
 
 
@@ -181,8 +167,21 @@ public class CampaignConverter {
                 .humanVictoryConditions(humanVictoryConditions)
                 .markupFiles(markupFiles)
                 .startingForces(factionUnitMap)
-                .specialCaseProduction(specialCaseProduction);
+                .specialCaseProduction(specialCaseProduction)
+                .descriptionId(campaign.getDescription_Text())
+                .textId(campaign.getText_ID());
 
         return b.build();
+    }
+
+    private void fillUnitMap(Map<MPlanet, List<FactionUnit>> specialCaseProduction, List<String> special_case_production) {
+        for (String s : special_case_production) {
+            String[] factionPlanetUnit = s.split(",");
+            FactionUnit factionUnit = new FactionUnit(units.get(factionPlanetUnit[2].trim()), factions.get(factionPlanetUnit[0].trim()));
+            MPlanet planet = planets.get(factionPlanetUnit[1].trim());
+
+            List<FactionUnit> list = specialCaseProduction.computeIfAbsent(planet, k -> new ArrayList<>());
+            list.add(factionUnit);
+        }
     }
 }
