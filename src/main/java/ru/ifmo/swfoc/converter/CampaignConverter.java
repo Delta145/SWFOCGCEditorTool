@@ -1,28 +1,24 @@
 package ru.ifmo.swfoc.converter;
 
-import ru.ifmo.swfoc.editor.model.MCampaign;
-import ru.ifmo.swfoc.editor.model.MFaction;
-import ru.ifmo.swfoc.editor.model.MPlanet;
-import ru.ifmo.swfoc.editor.model.MTradeRoute;
+import ru.ifmo.swfoc.editor.model.*;
 import ru.ifmo.swfoc.io.DATLoader;
 import ru.ifmo.swfoc.xmltoobject.campaign.Campaign;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CampaignConverter {
     private DATLoader datLoader;
     private Map<String, MPlanet> planets;
     private Map<String, MFaction> factions;
     private Map<String, MTradeRoute> routes;
+    private Map<String, MUnit> units;
 
-    public CampaignConverter(DATLoader datLoader, Map<String, MPlanet> planets, Map<String, MFaction> factions, Map<String, MTradeRoute> tradeRoutes) {
+    public CampaignConverter(DATLoader datLoader, Map<String, MPlanet> planets, Map<String, MFaction> factions, Map<String, MTradeRoute> tradeRoutes, Map<String, MUnit> units) {
         this.datLoader = datLoader;
         this.planets = planets;
         this.factions = factions;
         this.routes = tradeRoutes;
+        this.units = units;
     }
 
     private boolean validStr(String str) {
@@ -32,12 +28,12 @@ public class CampaignConverter {
     public MCampaign toMCampaign(Campaign campaign, String filename) {
         MCampaign.MCampaignBuilder b = MCampaign.builder();
 
-        String campaignName = datLoader.getValue(campaign.getText_ID().trim());
-        String description = datLoader.getValue(campaign.getDescription_Text().trim());
+        String campaignName = datLoader.getInGameName(campaign.getText_ID().trim());
+        String description = datLoader.getInGameName(campaign.getDescription_Text().trim());
 
         MFaction activePlayer = null;
         if (validStr(campaign.getStarting_Active_Player()))
-            factions.get(campaign.getStarting_Active_Player().trim());
+            activePlayer = factions.get(campaign.getStarting_Active_Player().trim());
 
         Boolean isMultiplayer = null;
         if (validStr(campaign.getIs_Multiplayer()))
@@ -65,9 +61,23 @@ public class CampaignConverter {
             }
         }
 
+        List<String> aiVictoryConditions = new ArrayList<>();
+        if (validStr(campaign.getAI_Victory_Conditions())) {
+            String[] victory_conditions = campaign.getAI_Victory_Conditions().trim().split(",");
+            for (String victory_condition : victory_conditions) {
+                aiVictoryConditions.add(victory_condition.trim());
+            }
+        }
+
+        List<String> humanVictoryConditions = new ArrayList<>();
+        if (validStr(campaign.getHuman_Victory_Conditions())) {
+            String[] victory_conditions = campaign.getHuman_Victory_Conditions().trim().split(",");
+            for (String victory_condition : victory_conditions) {
+                humanVictoryConditions.add(victory_condition.trim());
+            }
+        }
 
         Map<MFaction, Integer> maxTechs = new HashMap<>();
-
         if (campaign.getMax_Tech_Level() != null) {
             List<String> max_tech_level = campaign.getMax_Tech_Level();
             for (String s : max_tech_level) {
@@ -99,6 +109,42 @@ public class CampaignConverter {
             }
         }
 
+        Map<MFaction, String> aiPlayerControl = new HashMap<>();
+        if (campaign.getAI_Player_Control() != null) {
+            List<String> ai_player_control = campaign.getAI_Player_Control();
+            for (String s : ai_player_control) {
+                String[] factionAI = s.trim().split(",");
+                aiPlayerControl.put(factions.get(factionAI[0].trim()), factionAI[1].trim());
+            }
+        }
+
+        Map<MFaction, String> markupFiles = new HashMap<>();
+        if (campaign.getMarkup_Filename() != null) {
+            List<String> markup_filenames = campaign.getMarkup_Filename();
+            for (String s : markup_filenames) {
+                String[] factionFile = s.trim().split(",");
+                markupFiles.put(factions.get(factionFile[0].trim()), factionFile[1].trim());
+            }
+        }
+
+        Map<MPlanet, List<FactionUnit>> factionUnitMap = new HashMap<>();
+        if (campaign.getStarting_Forces() != null) {
+            List<String> starting_forces = campaign.getStarting_Forces();
+            for (String s : starting_forces) {
+                String[] factionPlanetUnit = s.split(",");
+                FactionUnit factionUnit = new FactionUnit(units.get(factionPlanetUnit[2].trim()), factions.get(factionPlanetUnit[0].trim()));
+                MPlanet planet = planets.get(factionPlanetUnit[1].trim());
+
+                List<FactionUnit> list = factionUnitMap.get(planet);
+                if (list == null) {
+                    list = new ArrayList<>();
+                    factionUnitMap.put(planet, list);
+                } else {
+                    list.add(factionUnit);
+                }
+            }
+        }
+
 
         b.fileName(filename)
                 .name(campaignName)
@@ -119,9 +165,14 @@ public class CampaignConverter {
                 .campaignSet(campaign.getCampaign_Set())
                 .sortOrder(campaign.getSort_Order())
                 .tradeRoutes(tradeRoutes)
-
-        ;
-
+                .singlePlayerEmpireStory(campaign.getEmpire_Story_Name())
+                .singlePlayerRebelStory(campaign.getRebel_Story_Name())
+                .singlePlayerUnderworldStory(campaign.getUnderworld_Story_Name())
+                .aiPlayerControl(aiPlayerControl)
+                .aiVictoryConditions(aiVictoryConditions)
+                .humanVictoryConditions(humanVictoryConditions)
+                .markupFiles(markupFiles)
+                .startingForces(factionUnitMap);
 
         return b.build();
     }

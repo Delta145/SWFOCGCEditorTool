@@ -25,7 +25,7 @@ public class MCampaign {
     private String singlePlayerRebelStory;
     private String singlePlayerEmpireStory;
     private String singlePlayerUnderworldStory;
-    private Map<MFaction, String> AI_Player_Control;
+    private Map<MFaction, String> aiPlayerControl;
     private Boolean isMultiplayer;
     private Map<MFaction, String> markupFiles;
     private Boolean supportsCustomSettings;
@@ -36,5 +36,5 @@ public class MCampaign {
     private Map<MFaction, Integer> startingCredits;
     private Map<MFaction, Integer> startingTech;
     private Map<MFaction, Integer> maxTech;
-    private Map<MPlanet, FactionUnit> Starting_Forces;
+    private Map<MPlanet, List<FactionUnit>> startingForces;
 }

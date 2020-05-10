@@ -5,6 +5,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import ru.ifmo.swfoc.xmltoobject.Unit;
 import ru.ifmo.swfoc.xmltoobject.campaign.CampaignWrapper;
 import ru.ifmo.swfoc.xmltoobject.faction.FactionWrapper;
 import ru.ifmo.swfoc.xmltoobject.planet.Planet;
@@ -22,13 +23,13 @@ import java.util.List;
 public class XMLGameObjectLoader {
     private Config config;
     private File processingFile;
-    private List<String> squadrons = new ArrayList<>();
-    private List<String> spaceUnits = new ArrayList<>();
-    private List<String> specialStructures = new ArrayList<>();
-    private List<String> groundCompanies = new ArrayList<>();
-    private List<String> starBases = new ArrayList<>();
+    private List<Unit> squadrons = new ArrayList<>();
+    private List<Unit> spaceUnits = new ArrayList<>();
+    private List<Unit> specialStructures = new ArrayList<>();
+    private List<Unit> groundCompanies = new ArrayList<>();
+    private List<Unit> starBases = new ArrayList<>();
     private List<Planet> planets = new ArrayList<>();
-    private List<String> heroCompanies = new ArrayList<>();
+    private List<Unit> heroCompanies = new ArrayList<>();
 
     public XMLGameObjectLoader(File file, Config config) {
         processingFile = file;
@@ -55,24 +56,27 @@ public class XMLGameObjectLoader {
                 for (Element gameObject : listGameObject) {
                     if (gameObject.getAttribute("Name").getValue().contains("Death_Clone"))
                         continue;
+                    String xmlName = gameObject.getAttributeValue("Name");
+                    String factions = gameObject.getChildText("Affiliation");
+                    String textId = gameObject.getChildText("Text_ID");
                     switch (gameObject.getName()) {
                         case "Squadron":
-                            squadrons.add(gameObject.getAttribute("Name").getValue());
+                            squadrons.add(new Unit(xmlName, textId, factions));
                             break;
                         case "SpaceUnit":
-                            spaceUnits.add(gameObject.getAttribute("Name").getValue());
+                            spaceUnits.add(new Unit(xmlName, textId, factions));
                             break;
                         case "SpecialStructure":
-                            specialStructures.add(gameObject.getAttribute("Name").getValue());
+                            specialStructures.add(new Unit(xmlName, textId, factions));
                             break;
                         case "GroundCompany":
-                            groundCompanies.add(gameObject.getAttribute("Name").getValue());
+                            groundCompanies.add(new Unit(xmlName, textId, factions));
                             break;
                         case "StarBase":
-                            starBases.add(gameObject.getAttribute("Name").getValue());
+                            starBases.add(new Unit(xmlName, textId, factions));
                             break;
                         case "HeroCompany":
-                            heroCompanies.add(gameObject.getAttribute("Name").getValue());
+                            heroCompanies.add(new Unit(xmlName, textId, factions));
                             break;
                         case "Planet":
                             JAXBContext jaxbContext;

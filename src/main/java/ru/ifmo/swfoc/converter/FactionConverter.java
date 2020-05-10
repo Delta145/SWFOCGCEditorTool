@@ -13,7 +13,7 @@ public class FactionConverter {
 
     public MFaction toMFaction(Faction faction) {
         String xmlName = faction.getName();
-        String name = datLoader.getValue(faction.getText_ID().trim());
+        String name = datLoader.getInGameName(faction.getText_ID().trim());
         return new MFaction(name, xmlName);
     }
 }

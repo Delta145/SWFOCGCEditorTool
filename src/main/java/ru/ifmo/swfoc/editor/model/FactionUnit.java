@@ -6,6 +6,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class FactionUnit {
-    private String unitName;
+    private MUnit unit;
     private MFaction owner;
 }

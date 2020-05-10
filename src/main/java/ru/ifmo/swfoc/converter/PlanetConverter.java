@@ -19,7 +19,7 @@ public class PlanetConverter {
         double x = Double.parseDouble(galactic_position[0]), y = Double.parseDouble(galactic_position[1]), z = Double.parseDouble(galactic_position[2]);
 
         b.xmlName(planet.getName())
-            .name(datLoader.getValue(planet.getText_ID()))
+            .name(datLoader.getInGameName(planet.getText_ID()))
             .x(x).y(y).z(z)
             .maxSpaceBaseLevel(planet.getMax_Space_Base())
             .maxStructuresLand(planet.getSpecial_Structures_Land())

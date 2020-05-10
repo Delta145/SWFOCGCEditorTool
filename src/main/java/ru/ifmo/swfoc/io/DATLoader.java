@@ -15,7 +15,7 @@ public class DATLoader {
         records = reader.readFile();
     }
 
-    public String getValue(String key) {
+    public String getInGameName(String key) {
         return records.get(key.trim());
     }
 }
