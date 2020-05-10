@@ -16,7 +16,7 @@ public class ConfigTest {
         EditorCore editorCore = new EditorCore(config);
 
         GameEntities gameEntitiesStore = editorCore.getGameEntitiesStore();
-        List<MCampaign> allCampaigns = gameEntitiesStore.getAllCampaigns();
+        List<MCampaign> allCampaigns = gameEntitiesStore.getCampaigns();
         for (MCampaign allCampaign : allCampaigns) {
             System.out.println(allCampaign);
         }

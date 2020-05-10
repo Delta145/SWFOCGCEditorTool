@@ -158,6 +158,11 @@ public class GameEntitiesStore implements GameEntities {
     }
 
     @Override
+    public List<MUnit> getStarBases() {
+        return starBases;
+    }
+
+    @Override
     public void setAllCampaigns(List<MCampaign> campaigns) {
         this.campaigns = campaigns;
     }

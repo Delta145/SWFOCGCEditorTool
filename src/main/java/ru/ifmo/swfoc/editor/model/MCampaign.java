@@ -32,7 +32,7 @@ public class MCampaign {
     private Boolean showCompletedTab;
     private List<String> humanVictoryConditions;
     private List<String> aiVictoryConditions;
-    private Map<MPlanet, String> specialCaseProduction;
+    private Map<MPlanet, List<FactionUnit>> specialCaseProduction;
     private Map<MFaction, Integer> startingCredits;
     private Map<MFaction, Integer> startingTech;
     private Map<MFaction, Integer> maxTech;
