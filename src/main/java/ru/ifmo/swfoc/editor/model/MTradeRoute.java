@@ -2,7 +2,6 @@ package ru.ifmo.swfoc.editor.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import ru.ifmo.swfoc.xmltoobject.planet.Planet;
 
 @AllArgsConstructor
 @Data

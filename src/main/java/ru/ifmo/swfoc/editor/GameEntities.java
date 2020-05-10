@@ -10,6 +10,7 @@ public interface GameEntities {
     List<MTradeRoute> getTradeRoutes();
     List<MPlanet> getPlanets();
     List<MUnit> getSpaceUnits();
+    List<MUnit> getUniqueUnits();
     List<MUnit> getGroundCompanies();
     List<MUnit> getSquadrons();
     List<MUnit> getSpecialStructures();

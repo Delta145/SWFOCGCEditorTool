@@ -27,8 +27,9 @@ public class XMLGameObjectLoader {
     private List<Unit> specialSpecialStructures = new ArrayList<>();
     private List<Unit> groundCompanies = new ArrayList<>();
     private List<Unit> starBases = new ArrayList<>();
-    private List<Planet> planets = new ArrayList<>();
     private List<Unit> heroCompanies = new ArrayList<>();
+    private List<Unit> uniqueUnits = new ArrayList<>();
+    private List<Planet> planets = new ArrayList<>();
 
     public XMLGameObjectLoader(File file, Config config) {
         processingFile = file;
@@ -58,7 +59,7 @@ public class XMLGameObjectLoader {
                     String xmlName = gameObject.getAttributeValue("Name");
                     String factions = gameObject.getChildText("Affiliation");
                     String textId = gameObject.getChildText("Text_ID");
-                    boolean isSpecial = gameObject.getChild("Has_Space_Evaluator") != null || gameObject.getChild("Build_Requires_Initial_Placement") != null;
+                    boolean isSpecial = (gameObject.getChildText("Ship_Class") != null && (gameObject.getChildText("Ship_Class").equalsIgnoreCase("fighter") || gameObject.getChildText("Ship_Class").equalsIgnoreCase("bomber"))) || gameObject.getChild("Build_Requires_Initial_Placement") != null;
                     Element variantOfExistingType = gameObject.getChild("Variant_Of_Existing_Type");
 
                     switch (gameObject.getName()) {
@@ -67,8 +68,17 @@ public class XMLGameObjectLoader {
                                 addUnitOfExistingType(gameObject, xmlName, factions, textId, isSpecial, squadrons);
                             } else squadrons.add(new Unit(xmlName, textId, factions, isSpecial));
                             break;
+                        case "UniqueUnit":
+                            if (variantOfExistingType != null) {
+                                addUnitOfExistingType(gameObject, xmlName, factions, textId, isSpecial, uniqueUnits);
+                            } else if (!isSpecial)
+                                uniqueUnits.add(new Unit(xmlName, textId, factions, true));
+                            break;
                         case "SpaceUnit":
-                            addSpaceUnit(gameObject, xmlName, factions, textId, isSpecial, variantOfExistingType);
+                            if (variantOfExistingType != null) {
+                                addUnitOfExistingType(gameObject, xmlName, factions, textId, isSpecial, spaceUnits);
+                            } else if (!isSpecial)
+                                spaceUnits.add(new Unit(xmlName, textId, factions, true));
                             break;
                         case "SpecialStructure":
                             if (variantOfExistingType!= null) {
@@ -116,13 +126,6 @@ public class XMLGameObjectLoader {
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-    }
-
-    private void addSpaceUnit(Element gameObject, String xmlName, String factions, String textId, boolean hasSpaceEvaluator, Element variantOfExistingType) {
-        if (variantOfExistingType!= null) {
-            addUnitOfExistingType(gameObject, xmlName, factions, textId, hasSpaceEvaluator, spaceUnits);
-        } else if (gameObject.getChild("Has_Space_Evaluator") != null)
-            spaceUnits.add(new Unit(xmlName, textId, factions, hasSpaceEvaluator));
     }
 
     private void addUnitOfExistingType(Element gameObject, String xmlName, String factions, String textId, boolean hasSpaceEvaluator, List<Unit> spaceUnits) {

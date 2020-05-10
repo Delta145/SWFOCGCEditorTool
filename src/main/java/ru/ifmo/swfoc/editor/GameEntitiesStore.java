@@ -31,6 +31,7 @@ public class GameEntitiesStore implements GameEntities {
     private final List<MUnit> groundCompanies = new ArrayList<>();
     private final List<MUnit> starBases = new ArrayList<>();
     private final List<MUnit> spaceUnits = new ArrayList<>();
+    private final List<MUnit> uniqueUnits = new ArrayList<>();
     private final List<MUnit> specialStructures = new ArrayList<>();
     private final List<MUnit> specialSpecialStructures = new ArrayList<>();
 
@@ -100,6 +101,11 @@ public class GameEntitiesStore implements GameEntities {
             spaceUnits.add(unit);
             xmlNameUnit.put(unit.getXmlName(), unit);
         }
+        for (Unit u : gameObjectParser.getUniqueUnits()) {
+            MUnit unit = unitConverter.toMUnit(u);
+            uniqueUnits.add(unit);
+            xmlNameUnit.put(unit.getXmlName(), unit);
+        }
 
 
 
@@ -138,6 +144,11 @@ public class GameEntitiesStore implements GameEntities {
     @Override
     public List<MUnit> getSpaceUnits() {
         return spaceUnits;
+    }
+
+    @Override
+    public List<MUnit> getUniqueUnits() {
+        return uniqueUnits;
     }
 
     @Override

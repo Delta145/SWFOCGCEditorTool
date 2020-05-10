@@ -20,13 +20,9 @@ public class MCampaignConverterTest {
         EditorCore editorCore = new EditorCore(config);
 
         GameEntities gameEntitiesStore = editorCore.getGameEntitiesStore();
-        List<MCampaign> campaigns = gameEntitiesStore.getCampaigns();
-        MCampaignConverter mCampaignConverter = new MCampaignConverter();
-        Campaign campaign = mCampaignConverter.toCampaign(campaigns.get(0));
-        List<String> markup_filename = campaign.getSpecial_Case_Production();
-        for (String s : markup_filename) {
-            System.out.println(s);
+        List<MUnit> spaceUnits = gameEntitiesStore.getUniqueUnits();
+        for (MUnit spaceUnit : spaceUnits) {
+            System.out.println(spaceUnit);
         }
-//        System.out.println(campaign.getTrade_Routes());
     }
 }
