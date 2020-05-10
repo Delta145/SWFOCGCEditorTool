@@ -32,6 +32,7 @@ public class GameEntitiesStore implements GameEntities {
     private final List<MUnit> starBases = new ArrayList<>();
     private final List<MUnit> spaceUnits = new ArrayList<>();
     private final List<MUnit> specialStructures = new ArrayList<>();
+    private final List<MUnit> specialSpecialStructures = new ArrayList<>();
 
     private PlanetConverter planetConverter;
     private TradeRouteConverter tradeRouteConverter;
@@ -85,6 +86,8 @@ public class GameEntitiesStore implements GameEntities {
         for (Unit u : gameObjectParser.getSpecialStructures()) {
             MUnit unit = unitConverter.toMUnit(u);
             specialStructures.add(unit);
+            if (u.isSpecial())
+                specialSpecialStructures.add(unit);
             xmlNameUnit.put(unit.getXmlName(), unit);
         }
         for (Unit u : gameObjectParser.getSquadrons()) {
@@ -160,6 +163,11 @@ public class GameEntitiesStore implements GameEntities {
     @Override
     public List<MUnit> getStarBases() {
         return starBases;
+    }
+
+    @Override
+    public List<MUnit> getSpecialSpecialStructures() {
+        return specialSpecialStructures;
     }
 
     @Override

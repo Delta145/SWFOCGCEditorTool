@@ -15,5 +15,6 @@ public interface GameEntities {
     List<MUnit> getSpecialStructures();
     List<MUnit> getHeroCompanies();
     List<MUnit> getStarBases();
+    List<MUnit> getSpecialSpecialStructures();
     void setAllCampaigns(List<MCampaign> campaigns);
 }
