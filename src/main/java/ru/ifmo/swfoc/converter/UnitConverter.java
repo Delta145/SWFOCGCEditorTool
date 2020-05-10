@@ -27,7 +27,7 @@ public class UnitConverter {
         if (unit.getFaction() != null) {
             String[] factions = unit.getFaction().trim().split(",");
             for (String faction : factions) {
-                factionList.add(xmlNameFaction.get(faction));
+                factionList.add(xmlNameFaction.get(faction.trim()));
             }
         }
 

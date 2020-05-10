@@ -3,7 +3,7 @@ package ru.ifmo.swfoc.root;
 import org.junit.Test;
 import ru.ifmo.swfoc.editor.EditorCore;
 import ru.ifmo.swfoc.editor.GameEntities;
-import ru.ifmo.swfoc.editor.model.MCampaign;
+import ru.ifmo.swfoc.editor.model.MUnit;
 import ru.ifmo.swfoc.io.Config;
 
 import java.io.IOException;
@@ -16,9 +16,9 @@ public class ConfigTest {
         EditorCore editorCore = new EditorCore(config);
 
         GameEntities gameEntitiesStore = editorCore.getGameEntitiesStore();
-        List<MCampaign> allCampaigns = gameEntitiesStore.getCampaigns();
-        for (MCampaign allCampaign : allCampaigns) {
-            System.out.println(allCampaign);
+        List<MUnit> spaceUnits = gameEntitiesStore.getSquadrons();
+        for (MUnit spaceUnit : spaceUnits) {
+            System.out.println(spaceUnit);
         }
     }
 }
