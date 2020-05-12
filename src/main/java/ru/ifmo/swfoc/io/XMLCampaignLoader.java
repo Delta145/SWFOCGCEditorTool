@@ -44,6 +44,7 @@ public class XMLCampaignLoader {
                     campaigns.setFileName(campaignFileName);
                     campaignWrappers.add(campaigns);
                 } catch (JAXBException e) {
+//                    e.printStackTrace();
                     System.err.println("Error on parsing "+campaignFileName);
                 }
 

@@ -56,6 +56,8 @@ public class CampaignConverter {
         List<MTradeRoute> tradeRoutes = new ArrayList<>();
         if (validStr(campaign.getTrade_Routes())) {
             String[] trade_routes = campaign.getTrade_Routes().trim().split(",");
+            if (trade_routes.length == 1)
+                trade_routes = campaign.getTrade_Routes().trim().split("\n");
             for (String tradeRoute : trade_routes) {
                 tradeRoutes.add(routes.get(tradeRoute.trim()));
             }

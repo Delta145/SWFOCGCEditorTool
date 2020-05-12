@@ -5,6 +5,7 @@ import ru.ifmo.swfoc.xmltoobject.campaign.Campaign;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MCampaignConverter {
     public Campaign toCampaign(MCampaign mCampaign) {
@@ -14,20 +15,8 @@ public class MCampaignConverter {
         if (mCampaign.getIsMultiplayer() != null && mCampaign.getIsMultiplayer())
             is_Multiplayer = "Yes";
 
-        StringBuilder locationsBuilder = null;
-        if (mCampaign.getLocations() != null) {
-            locationsBuilder = new StringBuilder();
-            String prefix = "";
-            for (MPlanet l : mCampaign.getLocations()) {
-                locationsBuilder.append(prefix);
-                prefix = ",\n";
-                locationsBuilder.append(l.getXmlName());
-            }
-        }
-        String locations = null;
-        if (locationsBuilder != null) {
-            locations = locationsBuilder.toString();
-        }
+        List<String> planetNames = mCampaign.getLocations().stream().map(MPlanet::getXmlName).collect(Collectors.toList());
+        String locations = convertFromListToStr(planetNames);
 
         List<String> startingForces = null;
         if (mCampaign.getStartingForces() != null) {
@@ -82,7 +71,7 @@ public class MCampaignConverter {
         }
 
         String supportCustomSettings = null;
-        Boolean supportCustomSettingsBoolean = mCampaign.getShowCompletedTab();
+        Boolean supportCustomSettingsBoolean = mCampaign.getSupportsCustomSettings();
         if (supportCustomSettingsBoolean != null) {
             if (supportCustomSettingsBoolean)
                 supportCustomSettings = "True";
@@ -131,6 +120,7 @@ public class MCampaignConverter {
             }
         }
 
+
         List<String> tradeRouteNames = mCampaign.getTradeRoutes().stream()
                 .map(MTradeRoute::getName)
                 .collect(Collectors.toList());
@@ -145,39 +135,39 @@ public class MCampaignConverter {
                 List<FactionUnit> factionUnits = specialCaseProductionMap.get(mPlanet);
                 for (FactionUnit factionUnit : factionUnits) {
                     specialCaseProduction.add(factionUnit.getOwner().getXmlName() + ", "
-                    + mPlanet.getXmlName() + ", " + factionUnit.getUnit().getXmlName());
+                            + mPlanet.getXmlName() + ", " + factionUnit.getUnit().getXmlName());
                 }
             }
         }
 
 
         b.Name(mCampaign.getXmlName())
-            .Text_ID(mCampaign.getTextId())
-            .Description_Text(mCampaign.getDescriptionId())
-            .Camera_Distance(mCampaign.getCameraDistance())
-            .Camera_Shift_X(mCampaign.getCameraShiftX())
-            .Camera_Shift_Y(mCampaign.getCameraShiftY())
-            .Is_Multiplayer(is_Multiplayer)
-            .Campaign_Set(mCampaign.getCampaignSet())
-            .Empire_Story_Name(mCampaign.getSinglePlayerEmpireStory())
-            .Rebel_Story_Name(mCampaign.getSinglePlayerEmpireStory())
-            .Underworld_Story_Name(mCampaign.getSinglePlayerUnderworldStory())
-            .Locations(locations)
-            .Sort_Order(mCampaign.getSortOrder())
-            .Starting_Forces(startingForces)
-            .Home_Location(homeLocations)
-            .AI_Player_Control(aiPlayerControl)
-            .AI_Victory_Conditions(aiVictoryConditions)
-            .Human_Victory_Conditions(humanVictoryConditions)
-            .Starting_Active_Player(startingActivePlayer)
-            .Show_Completed_Tab(showCompleteTab)
-            .Supports_Custom_Settings(supportCustomSettings)
-            .Markup_Filename(markupFiles)
-            .Starting_Tech_Level(startingTech)
-            .Max_Tech_Level(maxTech)
-            .Starting_Credits(startCredits)
-            .Trade_Routes(tradeRoutes)
-            .Special_Case_Production(specialCaseProduction);
+                .Text_ID(mCampaign.getTextId())
+                .Description_Text(mCampaign.getDescriptionId())
+                .Camera_Distance(mCampaign.getCameraDistance())
+                .Camera_Shift_X(mCampaign.getCameraShiftX())
+                .Camera_Shift_Y(mCampaign.getCameraShiftY())
+                .Is_Multiplayer(is_Multiplayer)
+                .Campaign_Set(mCampaign.getCampaignSet())
+                .Empire_Story_Name(mCampaign.getSinglePlayerEmpireStory())
+                .Rebel_Story_Name(mCampaign.getSinglePlayerEmpireStory())
+                .Underworld_Story_Name(mCampaign.getSinglePlayerUnderworldStory())
+                .Locations(locations)
+                .Sort_Order(mCampaign.getSortOrder())
+                .Starting_Forces(startingForces)
+                .Home_Location(homeLocations)
+                .AI_Player_Control(aiPlayerControl)
+                .AI_Victory_Conditions(aiVictoryConditions)
+                .Human_Victory_Conditions(humanVictoryConditions)
+                .Starting_Active_Player(startingActivePlayer)
+                .Show_Completed_Tab(showCompleteTab)
+                .Supports_Custom_Settings(supportCustomSettings)
+                .Markup_Filename(markupFiles)
+                .Starting_Tech_Level(startingTech)
+                .Max_Tech_Level(maxTech)
+                .Starting_Credits(startCredits)
+                .Trade_Routes(tradeRoutes)
+                .Special_Case_Production(specialCaseProduction);
 
         return b.build();
     }
@@ -189,7 +179,7 @@ public class MCampaignConverter {
             String prefix = "";
             for (String s : aiVictoryConditionsList) {
                 builder.append(prefix);
-                prefix = ",\n";
+                prefix = ", ";
                 builder.append(s);
             }
             str = builder.toString();

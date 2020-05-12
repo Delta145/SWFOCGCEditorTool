@@ -69,9 +69,7 @@ public class XMLGameObjectLoader {
                             } else squadrons.add(new Unit(xmlName, textId, factions, isSpecial));
                             break;
                         case "UniqueUnit":
-                            if (variantOfExistingType != null) {
-                                addUnitOfExistingType(gameObject, xmlName, factions, textId, isSpecial, uniqueUnits);
-                            } else if (!isSpecial)
+                            if (!isSpecial)
                                 uniqueUnits.add(new Unit(xmlName, textId, factions, true));
                             break;
                         case "SpaceUnit":
@@ -128,14 +126,14 @@ public class XMLGameObjectLoader {
         }
     }
 
-    private void addUnitOfExistingType(Element gameObject, String xmlName, String factions, String textId, boolean hasSpaceEvaluator, List<Unit> spaceUnits) {
-        for (Unit unit : spaceUnits) {
+    private void addUnitOfExistingType(Element gameObject, String xmlName, String factions, String textId, boolean hasSpaceEvaluator, List<Unit> units) {
+        for (Unit unit : units) {
             if (unit.getXmlName().equalsIgnoreCase(gameObject.getChildText("Variant_Of_Existing_Type").trim())) {
                 if (factions == null)
                     factions = unit.getFaction();
                 if (textId == null)
                     textId = unit.getTextId();
-                spaceUnits.add(new Unit(xmlName, textId, factions, hasSpaceEvaluator));
+                units.add(new Unit(xmlName, textId, factions, hasSpaceEvaluator));
                 break;
             }
         }

@@ -6,12 +6,10 @@ import ru.ifmo.swfoc.editor.GameEntities;
 import ru.ifmo.swfoc.editor.model.MCampaign;
 import ru.ifmo.swfoc.editor.model.MUnit;
 import ru.ifmo.swfoc.io.Config;
-import ru.ifmo.swfoc.xmltoobject.campaign.Campaign;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class MCampaignConverterTest {
     @Test
@@ -19,10 +17,11 @@ public class MCampaignConverterTest {
         Config config = new Config("settings.properties");
         EditorCore editorCore = new EditorCore(config);
 
-        GameEntities gameEntitiesStore = editorCore.getGameEntitiesStore();
-        List<MUnit> spaceUnits = gameEntitiesStore.getUniqueUnits();
-        for (MUnit spaceUnit : spaceUnits) {
-            System.out.println(spaceUnit);
-        }
+        editorCore.saveCampaignsToDirectory(new File("/home/gosha/Downloads"));
+//        GameEntities gameEntitiesStore = editorCore.getGameEntitiesStore();
+//        List<MUnit> uniqueUnits = gameEntitiesStore.getUniqueUnits();
+//        for (MUnit uniqueUnit : uniqueUnits) {
+//            System.out.println(uniqueUnit);
+//        }
     }
 }
