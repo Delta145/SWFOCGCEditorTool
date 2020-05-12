@@ -18,10 +18,10 @@ public class MCampaignConverterTest {
         EditorCore editorCore = new EditorCore(config);
 
         editorCore.saveCampaignsToDirectory(new File("/home/gosha/Downloads"));
-//        GameEntities gameEntitiesStore = editorCore.getGameEntitiesStore();
-//        List<MUnit> uniqueUnits = gameEntitiesStore.getUniqueUnits();
-//        for (MUnit uniqueUnit : uniqueUnits) {
-//            System.out.println(uniqueUnit);
-//        }
+        GameEntities gameEntitiesStore = editorCore.getGameEntitiesStore();
+        List<MCampaign> campaigns = gameEntitiesStore.getCampaigns();
+        for (MCampaign campaign : campaigns) {
+            System.out.println(campaign.getXmlName());
+        }
     }
 }

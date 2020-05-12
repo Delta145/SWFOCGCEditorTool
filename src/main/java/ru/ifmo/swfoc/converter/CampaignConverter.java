@@ -55,11 +55,17 @@ public class CampaignConverter {
 
         List<MTradeRoute> tradeRoutes = new ArrayList<>();
         if (validStr(campaign.getTrade_Routes())) {
-            String[] trade_routes = campaign.getTrade_Routes().trim().split(",");
-            if (trade_routes.length == 1)
-                trade_routes = campaign.getTrade_Routes().trim().split("\n");
+            String delimiter = "";
+            if (campaign.getTrade_Routes().contains(","))
+                delimiter = ",";
+            else
+                delimiter = "\n";
+
+            String[] trade_routes = campaign.getTrade_Routes().trim().split(delimiter);
+
             for (String tradeRoute : trade_routes) {
-                tradeRoutes.add(routes.get(tradeRoute.trim()));
+                if (tradeRoute.trim().length() > 0)
+                    tradeRoutes.add(routes.get(tradeRoute.trim()));
             }
         }
 
