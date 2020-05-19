@@ -36,7 +36,7 @@ public class XMLTradeRouteLoader {
 
             for (Element node : list) {
                 String tradeRouteFileName = node.getValue();
-                File tradeRouteFile = config.findFileIgnoreCase(tradeRouteFileName);
+                File tradeRouteFile = config.getFileForName(tradeRouteFileName);
                 JAXBContext jaxbContext;
                 try {
                     jaxbContext = JAXBContext.newInstance(TradeRouteWrapper.class);

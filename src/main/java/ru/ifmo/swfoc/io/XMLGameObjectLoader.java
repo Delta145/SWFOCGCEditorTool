@@ -46,7 +46,7 @@ public class XMLGameObjectLoader {
 
             for (Element node : list) {
                 String gameObjectFileName = node.getValue();
-                File gameObjectFile = config.findFileIgnoreCase(gameObjectFileName);
+                File gameObjectFile = config.getFileForName(gameObjectFileName);
 
                 Document gameObjectDoc = builder.build(gameObjectFile);
                 Element rootNodeGameObject = gameObjectDoc.getRootElement();

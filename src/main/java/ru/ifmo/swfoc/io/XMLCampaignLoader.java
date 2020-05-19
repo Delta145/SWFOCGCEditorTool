@@ -35,7 +35,7 @@ public class XMLCampaignLoader {
 
             for (Element node : list) {
                 String campaignFileName = node.getValue();
-                File campaignFile = config.findFileIgnoreCase(campaignFileName);
+                File campaignFile = config.getFileForName(campaignFileName);
                 JAXBContext jaxbContext;
                 try {
                     jaxbContext = JAXBContext.newInstance(CampaignWrapper.class);

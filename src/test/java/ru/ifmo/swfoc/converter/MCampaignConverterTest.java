@@ -4,7 +4,6 @@ import org.junit.Test;
 import ru.ifmo.swfoc.editor.EditorCore;
 import ru.ifmo.swfoc.editor.GameEntities;
 import ru.ifmo.swfoc.editor.model.MCampaign;
-import ru.ifmo.swfoc.editor.model.MUnit;
 import ru.ifmo.swfoc.io.Config;
 
 import java.io.File;
@@ -21,7 +20,8 @@ public class MCampaignConverterTest {
         GameEntities gameEntitiesStore = editorCore.getGameEntitiesStore();
         List<MCampaign> campaigns = gameEntitiesStore.getCampaigns();
         for (MCampaign campaign : campaigns) {
-            System.out.println(campaign.getXmlName());
+            if (campaign.getIsMultiplayer() != null && campaign.getIsMultiplayer())
+                System.out.println(campaign.getName());
         }
     }
 }

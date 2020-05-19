@@ -5,7 +5,6 @@ import ru.ifmo.swfoc.xmltoobject.campaign.Campaign;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MCampaignConverter {
     public Campaign toCampaign(MCampaign mCampaign) {
@@ -90,36 +89,11 @@ public class MCampaignConverter {
             }
         }
 
-        List<String> startingTech = null;
-        Map<MFaction, Integer> startingTechMap = mCampaign.getStartingTech();
-        if (startingTechMap != null) {
-            startingTech = new ArrayList<>();
-            Set<MFaction> mFactions = startingTechMap.keySet();
-            for (MFaction mFaction : mFactions) {
-                startingTech.add(mFaction.getXmlName() + ", " + startingTechMap.get(mFaction));
-            }
-        }
+        List<String> startingTech =convertMapToList( mCampaign.getStartingTech());
 
-        List<String> maxTech = null;
-        Map<MFaction, Integer> maxTechMap = mCampaign.getMaxTech();
-        if (maxTechMap != null) {
-            maxTech = new ArrayList<>();
-            Set<MFaction> mFactions = maxTechMap.keySet();
-            for (MFaction mFaction : mFactions) {
-                maxTech.add(mFaction.getXmlName() + ", " + maxTechMap.get(mFaction));
-            }
-        }
+        List<String> maxTech = convertMapToList(mCampaign.getMaxTech());
 
-        List<String> startCredits = null;
-        Map<MFaction, Integer> maxCreditsMap = mCampaign.getStartingCredits();
-        if (maxCreditsMap != null) {
-            startCredits = new ArrayList<>();
-            Set<MFaction> mFactions = maxCreditsMap.keySet();
-            for (MFaction mFaction : mFactions) {
-                startCredits.add(mFaction.getXmlName() + ", " + maxCreditsMap.get(mFaction));
-            }
-        }
-
+        List<String> startCredits = convertMapToList(mCampaign.getStartingCredits());
 
         List<String> tradeRouteNames = mCampaign.getTradeRoutes().stream()
                 .map(MTradeRoute::getName)
@@ -170,6 +144,18 @@ public class MCampaignConverter {
                 .Special_Case_Production(specialCaseProduction);
 
         return b.build();
+    }
+
+    private List<String> convertMapToList(Map<MFaction, Integer> startingTechMap) {
+        List<String> startingTech = null;
+        if (startingTechMap != null) {
+            startingTech = new ArrayList<>();
+            Set<MFaction> mFactions = startingTechMap.keySet();
+            for (MFaction mFaction : mFactions) {
+                startingTech.add(mFaction.getXmlName() + ", " + startingTechMap.get(mFaction));
+            }
+        }
+        return startingTech;
     }
 
     private String convertFromListToStr(List<String> aiVictoryConditionsList) {
