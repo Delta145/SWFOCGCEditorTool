@@ -96,17 +96,20 @@ public class CampaignConverter {
 
         Map<MFaction, Integer> startingTechs = new HashMap<>();
         List<String> starting_tech_level = campaign.getStarting_Tech_Level();
-        for (String s : starting_tech_level) {
-            String[] factionTech = s.trim().split(",");
-            startingTechs.put(factions.get(factionTech[0].trim()), Integer.parseInt(factionTech[1].trim()));
-        }
+        if (starting_tech_level != null)
+            for (String s : starting_tech_level) {
+                String[] factionTech = s.trim().split(",");
+                startingTechs.put(factions.get(factionTech[0].trim()), Integer.parseInt(factionTech[1].trim()));
+            }
 
         Map<MFaction, Integer> startingCredits = new HashMap<>();
         List<String> starting_credits = campaign.getStarting_Credits();
-        for (String s : starting_credits) {
-            String[] factionCredits = s.trim().split(",");
-            startingCredits.put(factions.get(factionCredits[0].trim()), Integer.parseInt(factionCredits[1].trim()));
-        }
+        if (starting_credits != null)
+            for (String s : starting_credits) {
+                String[] factionCredits = s.trim().split(",");
+                if (factionCredits.length > 1)
+                    startingCredits.put(factions.get(factionCredits[0].trim()), Integer.parseInt(factionCredits[1].trim()));
+            }
 
         Map<MFaction, MPlanet> homeLocations = new HashMap<>();
         if (campaign.getHome_Location() != null) {

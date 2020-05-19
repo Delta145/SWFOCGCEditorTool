@@ -54,9 +54,13 @@ public class GameEntitiesStore implements GameEntities {
 
         List<Planet> ps = gameObjectParser.getPlanets();
         for (Planet p : ps) {
-            MPlanet mPlanet = planetConverter.toMPlanet(p);
-            planets.add(mPlanet);
-            xmlNamePlanet.put(mPlanet.getXmlName(), mPlanet);
+            try {
+                MPlanet mPlanet = planetConverter.toMPlanet(p);
+                planets.add(mPlanet);
+                xmlNamePlanet.put(mPlanet.getXmlName(), mPlanet);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
         }
 
         tradeRouteConverter = new TradeRouteConverter(datLoader, xmlNamePlanet);

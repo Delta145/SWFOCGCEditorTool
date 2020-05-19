@@ -30,8 +30,12 @@ public class Config {
             swfocSourcesDir = prop.getProperty("swfoc.xml");
             modSourcesDir = prop.getProperty("mod.xml");
             String dataMinerFileName = prop.getProperty("swfoc.dataminerfiles");
-            String datfile = prop.getProperty("swfoc.mastertextfile");
-            masterTextFile = new File(datfile);
+
+            masterTextFile = new File(prop.getProperty("mod.mastertext"));
+            if (!masterTextFile.exists()) {
+                System.err.println("Master file for mod was not found, trying load it from swfoc sources");
+                masterTextFile = new File(prop.getProperty("swfoc.mastertext"));
+            }
 
             dataMinerFile = getFileForName(dataMinerFileName);
         } catch (FileNotFoundException ex) {
@@ -51,6 +55,27 @@ public class Config {
     }
 
     File findFileIgnoreCase(String filename, String dir) throws FileNotFoundException {
+        if (filename.contains("/")) {
+            StringBuilder builder = new StringBuilder();
+            String[] split = filename.split("/");
+            builder.append(dir);
+            for (int i = 0; i < split.length-1; i++)
+                builder.append(split[i]);
+            filename = split[split.length-1];
+            dir = builder.toString();
+        }
+
+        if (filename.contains("\\")) {
+            StringBuilder builder = new StringBuilder();
+            String[] split = filename.split("\\\\");
+            builder.append(dir);
+            for (int i = 0; i < split.length-1; i++)
+                builder.append(split[i]).append("/");
+            filename = split[split.length-1];
+            dir = builder.toString();
+        }
+
+
         File directory = new File(dir);
         File[] contents = directory.listFiles();
         if (contents != null)

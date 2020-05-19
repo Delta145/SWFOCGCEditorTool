@@ -24,7 +24,11 @@ public class MCampaignConverter {
             for (MPlanet mPlanet : mPlanets) {
                 List<FactionUnit> factionUnits = mCampaign.getStartingForces().get(mPlanet);
                 for (FactionUnit factionUnit : factionUnits) {
-                    startingForces.add(factionUnit.getOwner().getXmlName() + ", " + mPlanet.getXmlName() + ", " + factionUnit.getUnit().getXmlName());
+                    try {
+                        startingForces.add(factionUnit.getOwner().getXmlName() + ", " + mPlanet.getXmlName() + ", " + factionUnit.getUnit().getXmlName());
+                    } catch (Exception e) {
+                        System.err.println("Error on adding starting unit");
+                    }
                 }
             }
             Collections.sort(startingForces);

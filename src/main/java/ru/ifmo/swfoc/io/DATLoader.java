@@ -16,6 +16,8 @@ public class DATLoader {
     }
 
     public String getInGameName(String key) {
+        if (key == null)
+            key = "";
         return records.get(key.trim());
     }
 }
