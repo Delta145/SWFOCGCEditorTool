@@ -7,7 +7,7 @@ import ru.ifmo.swfoc.xmltoobject.planet.Planet;
 
 public class PlanetConverter {
 
-    private DATLoader datLoader;
+    private final DATLoader datLoader;
 
     public PlanetConverter(DATLoader datLoader) {
         this.datLoader = datLoader;
@@ -15,10 +15,10 @@ public class PlanetConverter {
 
     public MPlanet toMPlanet(Planet planet) {
         MPlanet.MPlanetBuilder b = MPlanet.builder();
-        String[] galactic_position = planet.getGalactic_Position().trim().split(",");
+        String[] galactic_position = planet.getGalactic_Position().trim().split(", | ");
         double x = Double.parseDouble(galactic_position[0]), y = Double.parseDouble(galactic_position[1]), z = Double.parseDouble(galactic_position[2]);
 
-        b.xmlName(planet.getName())
+        b.xmlName(planet.getName().toUpperCase())
                 .name(datLoader.getInGameName(planet.getText_ID()))
                 .x(x).y(y).z(z)
                 .maxSpaceBaseLevel(planet.getMax_Space_Base())

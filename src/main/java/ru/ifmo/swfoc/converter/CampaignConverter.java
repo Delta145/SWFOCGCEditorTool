@@ -6,12 +6,12 @@ import ru.ifmo.swfoc.xmltoobject.campaign.Campaign;
 
 import java.util.*;
 
-public class CampaignConverter {
-    private DATLoader datLoader;
-    private Map<String, MPlanet> planets;
-    private Map<String, MFaction> factions;
-    private Map<String, MTradeRoute> routes;
-    private Map<String, MUnit> units;
+public class CampaignConverter extends Converter {
+    private final DATLoader datLoader;
+    private final Map<String, MPlanet> planets;
+    private final Map<String, MFaction> factions;
+    private final Map<String, MTradeRoute> routes;
+    private final Map<String, MUnit> units;
 
     public CampaignConverter(DATLoader datLoader, Map<String, MPlanet> planets, Map<String, MFaction> factions, Map<String, MTradeRoute> tradeRoutes, Map<String, MUnit> units) {
         this.datLoader = datLoader;
@@ -33,7 +33,7 @@ public class CampaignConverter {
 
         MFaction activePlayer = null;
         if (validStr(campaign.getStarting_Active_Player()))
-            activePlayer = factions.get(campaign.getStarting_Active_Player().trim());
+            activePlayer = factions.get(cnv(campaign.getStarting_Active_Player()));
 
         Boolean isMultiplayer = null;
         if (validStr(campaign.getIs_Multiplayer()))
@@ -48,41 +48,33 @@ public class CampaignConverter {
             supportCustomSettings = campaign.getSupports_Custom_Settings().trim().equalsIgnoreCase("true");
 
         List<MPlanet> locations = new ArrayList<>();
-        String[] locationStrings = campaign.getLocations().trim().split(",");
+        String[] locationStrings = campaign.getLocations().trim().split(",\n|,|\n");
         for (String locationString : locationStrings) {
-            locations.add(planets.get(locationString.trim()));
+            if (planets.get(cnv(locationString)) == null)
+                continue;
+            locations.add(planets.get(cnv(locationString)));
         }
 
         List<MTradeRoute> tradeRoutes = new ArrayList<>();
         if (validStr(campaign.getTrade_Routes())) {
-            String delimiter = "";
-            if (campaign.getTrade_Routes().contains(","))
-                delimiter = ",";
-            else
-                delimiter = "\n";
-
-            String[] trade_routes = campaign.getTrade_Routes().trim().split(delimiter);
-
-            for (String tradeRoute : trade_routes) {
+            String[] trade_routes = campaign.getTrade_Routes().trim().split(",\n|,|\n");
+            for (String tradeRoute : trade_routes)
                 if (tradeRoute.trim().length() > 0)
-                    tradeRoutes.add(routes.get(tradeRoute.trim()));
-            }
+                    tradeRoutes.add(routes.get(cnv(tradeRoute)));
         }
 
         List<String> aiVictoryConditions = new ArrayList<>();
         if (validStr(campaign.getAI_Victory_Conditions())) {
             String[] victory_conditions = campaign.getAI_Victory_Conditions().trim().split(",");
-            for (String victory_condition : victory_conditions) {
+            for (String victory_condition : victory_conditions)
                 aiVictoryConditions.add(victory_condition.trim());
-            }
         }
 
         List<String> humanVictoryConditions = new ArrayList<>();
         if (validStr(campaign.getHuman_Victory_Conditions())) {
             String[] victory_conditions = campaign.getHuman_Victory_Conditions().trim().split(",");
-            for (String victory_condition : victory_conditions) {
+            for (String victory_condition : victory_conditions)
                 humanVictoryConditions.add(victory_condition.trim());
-            }
         }
 
         Map<MFaction, Integer> maxTechs = new HashMap<>();
@@ -90,7 +82,7 @@ public class CampaignConverter {
             List<String> max_tech_level = campaign.getMax_Tech_Level();
             for (String s : max_tech_level) {
                 String[] factionTech = s.trim().split(",");
-                maxTechs.put(factions.get(factionTech[0].trim()), Integer.parseInt(factionTech[1].trim()));
+                maxTechs.put(factions.get(cnv(factionTech[0])), Integer.parseInt(factionTech[1].trim()));
             }
         }
 
@@ -99,7 +91,7 @@ public class CampaignConverter {
         if (starting_tech_level != null)
             for (String s : starting_tech_level) {
                 String[] factionTech = s.trim().split(",");
-                startingTechs.put(factions.get(factionTech[0].trim()), Integer.parseInt(factionTech[1].trim()));
+                startingTechs.put(factions.get(cnv(factionTech[0])), Integer.parseInt(factionTech[1].trim()));
             }
 
         Map<MFaction, Integer> startingCredits = new HashMap<>();
@@ -108,7 +100,7 @@ public class CampaignConverter {
             for (String s : starting_credits) {
                 String[] factionCredits = s.trim().split(",");
                 if (factionCredits.length > 1)
-                    startingCredits.put(factions.get(factionCredits[0].trim()), Integer.parseInt(factionCredits[1].trim()));
+                    startingCredits.put(factions.get(cnv(factionCredits[0])), Integer.parseInt(factionCredits[1].trim()));
             }
 
         Map<MFaction, MPlanet> homeLocations = new HashMap<>();
@@ -116,7 +108,9 @@ public class CampaignConverter {
             List<String> home_location = campaign.getHome_Location();
             for (String s : home_location) {
                 String[] factionPlanet = s.trim().split(",");
-                homeLocations.put(factions.get(factionPlanet[0].trim()), planets.get(factionPlanet[1].trim()));
+                if (factions.get(cnv(factionPlanet[0])) == null)
+                    continue;
+                homeLocations.put(factions.get(cnv(factionPlanet[0])), planets.get(cnv(factionPlanet[1])));
             }
         }
 
@@ -125,7 +119,7 @@ public class CampaignConverter {
             List<String> ai_player_control = campaign.getAI_Player_Control();
             for (String s : ai_player_control) {
                 String[] factionAI = s.trim().split(",");
-                aiPlayerControl.put(factions.get(factionAI[0].trim()), factionAI[1].trim());
+                aiPlayerControl.put(factions.get(cnv(factionAI[0])), factionAI[1].trim());
             }
         }
 
@@ -134,7 +128,7 @@ public class CampaignConverter {
             List<String> markup_filenames = campaign.getMarkup_Filename();
             for (String s : markup_filenames) {
                 String[] factionFile = s.trim().split(",");
-                markupFiles.put(factions.get(factionFile[0].trim()), factionFile[1].trim());
+                markupFiles.put(factions.get(cnv(factionFile[0])), factionFile[1].trim());
             }
         }
 
@@ -153,7 +147,7 @@ public class CampaignConverter {
 
         b.fileName(filename)
                 .name(campaignName)
-                .xmlName(campaign.getName())
+                .xmlName(campaign.getName().toUpperCase())
                 .isMultiplayer(isMultiplayer)
                 .locations(locations)
                 .cameraDistance(campaign.getCamera_Distance())
@@ -185,13 +179,16 @@ public class CampaignConverter {
         return b.build();
     }
 
-    private void fillUnitMap(Map<MPlanet, List<FactionUnit>> specialCaseProduction, List<String> special_case_production) {
-        for (String s : special_case_production) {
+    private void fillUnitMap(Map<MPlanet, List<FactionUnit>> unitMap, List<String> unitList) {
+        for (String s : unitList) {
             String[] factionPlanetUnit = s.split(",");
-            FactionUnit factionUnit = new FactionUnit(units.get(factionPlanetUnit[2].trim()), factions.get(factionPlanetUnit[0].trim()));
-            MPlanet planet = planets.get(factionPlanetUnit[1].trim());
+            FactionUnit factionUnit = new FactionUnit(units.get(cnv(factionPlanetUnit[2])), factions.get(cnv(factionPlanetUnit[0])));
+            MPlanet planet = planets.get(cnv(factionPlanetUnit[1]));
 
-            List<FactionUnit> list = specialCaseProduction.computeIfAbsent(planet, k -> new ArrayList<>());
+            if (factionUnit.getUnit() == null)
+                return;
+
+            List<FactionUnit> list = unitMap.computeIfAbsent(planet, k -> new ArrayList<>());
             list.add(factionUnit);
         }
     }

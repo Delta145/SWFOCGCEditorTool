@@ -7,19 +7,17 @@ import ru.ifmo.swfoc.xmltoobject.traderoute.TradeRoute;
 
 import java.util.Map;
 
-public class TradeRouteConverter {
-    private DATLoader datLoader;
-    private Map<String, MPlanet> planets;
+public class TradeRouteConverter extends Converter {
+    private final Map<String, MPlanet> planets;
 
     public TradeRouteConverter(DATLoader datLoader, Map<String, MPlanet> planets) {
-        this.datLoader = datLoader;
         this.planets = planets;
     }
 
     public MTradeRoute toMTradeRoute(TradeRoute route) {
-        String name = route.getName();
-        MPlanet planetA = planets.get(route.getPointA().trim());
-        MPlanet planetB = planets.get(route.getPointB().trim());
+        String name = route.getName().toUpperCase();
+        MPlanet planetA = planets.get(cnv(route.getPointA()));
+        MPlanet planetB = planets.get(cnv(route.getPointB()));
         return new MTradeRoute(name, planetA, planetB);
     }
 }

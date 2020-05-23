@@ -5,6 +5,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import ru.ifmo.swfoc.util.Pair;
 import ru.ifmo.swfoc.xmltoobject.Unit;
 import ru.ifmo.swfoc.xmltoobject.planet.Planet;
 import ru.ifmo.swfoc.xmltoobject.planet.PlanetWrapper;
@@ -15,21 +16,24 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class XMLGameObjectLoader {
     private Config config;
     private File processingFile;
+    private Map<String, Unit> xmlNameUnit = new HashMap<>();
     private List<Unit> squadrons = new ArrayList<>();
     private List<Unit> spaceUnits = new ArrayList<>();
     private List<Unit> specialStructures = new ArrayList<>();
-    private List<Unit> specialSpecialStructures = new ArrayList<>();
     private List<Unit> groundCompanies = new ArrayList<>();
     private List<Unit> starBases = new ArrayList<>();
     private List<Unit> heroCompanies = new ArrayList<>();
     private List<Unit> uniqueUnits = new ArrayList<>();
     private List<Planet> planets = new ArrayList<>();
+    private List<Pair<Element, Unit>> updateAfterAll = new ArrayList<>();
 
     public XMLGameObjectLoader(File file, Config config) {
         processingFile = file;
@@ -56,51 +60,40 @@ public class XMLGameObjectLoader {
                 for (Element gameObject : listGameObject) {
                     if (gameObject.getAttribute("Name").getValue().contains("Death_Clone"))
                         continue;
-                    String xmlName = gameObject.getAttributeValue("Name");
+                    String xmlName = gameObject.getAttributeValue("Name").trim().toUpperCase();
                     String factions = gameObject.getChildText("Affiliation");
                     String textId = gameObject.getChildText("Text_ID");
-                    boolean isSpecial = (gameObject.getChildText("Ship_Class") != null && (gameObject.getChildText("Ship_Class").equalsIgnoreCase("fighter") || gameObject.getChildText("Ship_Class").equalsIgnoreCase("bomber"))) || gameObject.getChild("Build_Requires_Initial_Placement") != null;
+                    boolean isSpecial = (gameObject.getChildText("Ship_Class") != null && (gameObject.getChildText("Ship_Class").equalsIgnoreCase("fighter") || gameObject.getChildText("Ship_Class").equalsIgnoreCase("bomber")))
+                            || gameObject.getChild("Build_Requires_Initial_Placement") != null;
                     Element variantOfExistingType = gameObject.getChild("Variant_Of_Existing_Type");
 
+                    Unit unit = new Unit(xmlName, textId, factions, isSpecial);
+                    if (variantOfExistingType != null)
+                        updateUnitOfExistingType(variantOfExistingType, unit, true);
+                    xmlNameUnit.put(xmlName, unit);
                     switch (gameObject.getName()) {
                         case "Squadron":
-                            if (variantOfExistingType!= null) {
-                                addUnitOfExistingType(gameObject, xmlName, factions, textId, isSpecial, squadrons);
-                            } else squadrons.add(new Unit(xmlName, textId, factions, isSpecial));
+                            squadrons.add(unit);
                             break;
                         case "UniqueUnit":
-                            if (!isSpecial)
+//                            if (!isSpecial)
                                 uniqueUnits.add(new Unit(xmlName, textId, factions, true));
                             break;
                         case "SpaceUnit":
-                            if (variantOfExistingType != null) {
-                                addUnitOfExistingType(gameObject, xmlName, factions, textId, isSpecial, spaceUnits);
-                            } else if (!isSpecial)
+//                            if (!isSpecial)
                                 spaceUnits.add(new Unit(xmlName, textId, factions, true));
                             break;
                         case "SpecialStructure":
-                            if (variantOfExistingType!= null) {
-                                addUnitOfExistingType(gameObject, xmlName, factions, textId, isSpecial, specialStructures);
-                                addUnitOfExistingType(gameObject, xmlName, factions, textId, isSpecial, specialSpecialStructures);
-                            } else {
-                                specialStructures.add(new Unit(xmlName, textId, factions, isSpecial));
-                                specialSpecialStructures.add(new Unit(xmlName, textId, factions, isSpecial));
-                            }
+                            specialStructures.add(new Unit(xmlName, textId, factions, isSpecial));
                             break;
                         case "GroundCompany":
-                            if (variantOfExistingType!= null) {
-                                addUnitOfExistingType(gameObject, xmlName, factions, textId, isSpecial, groundCompanies);
-                            } else groundCompanies.add(new Unit(xmlName, textId, factions, isSpecial));
+                            groundCompanies.add(new Unit(xmlName, textId, factions, isSpecial));
                             break;
                         case "StarBase":
-                            if (variantOfExistingType!= null) {
-                                addUnitOfExistingType(gameObject, xmlName, factions, textId, isSpecial, starBases);
-                            } else starBases.add(new Unit(xmlName, textId, factions, isSpecial));
+                            starBases.add(new Unit(xmlName, textId, factions, isSpecial));
                             break;
                         case "HeroCompany":
-                            if (variantOfExistingType!= null) {
-                                addUnitOfExistingType(gameObject, xmlName, factions, textId, isSpecial, heroCompanies);
-                            } else heroCompanies.add(new Unit(xmlName, textId, factions, isSpecial));
+                            heroCompanies.add(new Unit(xmlName, textId, factions, isSpecial));
                             break;
                         case "Planet":
                             addPlanet(gameObjectFile);
@@ -108,6 +101,9 @@ public class XMLGameObjectLoader {
                     }
                 }
             }
+
+            for (Pair<Element, Unit> u : updateAfterAll)
+                updateUnitOfExistingType(u.getFirst(), u.getSecond(), false);
 
         } catch (IOException | JDOMException io) {
             System.out.println(io.getMessage());
@@ -126,16 +122,18 @@ public class XMLGameObjectLoader {
         }
     }
 
-    private void addUnitOfExistingType(Element gameObject, String xmlName, String factions, String textId, boolean hasSpaceEvaluator, List<Unit> units) {
-        for (Unit unit : units) {
-            if (unit.getXmlName().equalsIgnoreCase(gameObject.getChildText("Variant_Of_Existing_Type").trim())) {
-                if (factions == null)
-                    factions = unit.getFaction();
-                if (textId == null)
-                    textId = unit.getTextId();
-                units.add(new Unit(xmlName, textId, factions, hasSpaceEvaluator));
-                break;
-            }
+    private void updateUnitOfExistingType(Element gameObject, Unit unit, boolean allowAdd) {
+        try {
+            Unit parentUnit = xmlNameUnit.get(gameObject.getText().trim().toUpperCase());
+            if (unit.getFaction() == null)
+                unit.setFaction(parentUnit.getFaction());
+            if (unit.getTextId() == null)
+                unit.setTextId(parentUnit.getTextId());
+        } catch (NullPointerException e) {
+            if (allowAdd)
+                updateAfterAll.add(new Pair<>(gameObject, unit));
+            else
+                System.err.println("Unable to update unit " + unit.getXmlName() +  " from parent unit " + gameObject.getText());
         }
     }
 }

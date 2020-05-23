@@ -14,7 +14,12 @@ public class MCampaignConverter {
         if (mCampaign.getIsMultiplayer() != null && mCampaign.getIsMultiplayer())
             is_Multiplayer = "Yes";
 
-        List<String> planetNames = mCampaign.getLocations().stream().map(MPlanet::getXmlName).collect(Collectors.toList());
+        List<String> planetNames = null;
+        try {
+            planetNames = mCampaign.getLocations().stream().map(MPlanet::getXmlName).collect(Collectors.toList());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         String locations = convertFromListToStr(planetNames);
 
         List<String> startingForces = null;
@@ -38,9 +43,14 @@ public class MCampaignConverter {
         if (mCampaign.getHomeLocations() != null) {
             homeLocations = new ArrayList<>();
             Set<MFaction> mFactions = mCampaign.getHomeLocations().keySet();
-            for (MFaction mFaction : mFactions) {
-                homeLocations.add(mFaction.getXmlName() + ", " + mCampaign.getHomeLocations().get(mFaction).getXmlName());
-            }
+                for (MFaction mFaction : mFactions) {
+                    try {
+                        homeLocations.add(mFaction.getXmlName() + ", " + mCampaign.getHomeLocations().get(mFaction).getXmlName());
+                    } catch (NullPointerException e) {
+                        System.err.println();
+                        e.printStackTrace();
+                    }
+                }
         }
 
         List<String> aiPlayerControl = null;
@@ -93,7 +103,7 @@ public class MCampaignConverter {
             }
         }
 
-        List<String> startingTech =convertMapToList( mCampaign.getStartingTech());
+        List<String> startingTech = convertMapToList(mCampaign.getStartingTech());
 
         List<String> maxTech = convertMapToList(mCampaign.getMaxTech());
 

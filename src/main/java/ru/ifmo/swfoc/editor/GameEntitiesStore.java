@@ -35,11 +35,11 @@ public class GameEntitiesStore implements GameEntities {
     private final List<MUnit> specialStructures = new ArrayList<>();
     private final List<MUnit> specialSpecialStructures = new ArrayList<>();
 
-    private PlanetConverter planetConverter;
-    private TradeRouteConverter tradeRouteConverter;
-    private FactionConverter factionConverter;
-    private CampaignConverter campaignConverter;
-    private UnitConverter unitConverter;
+    private final PlanetConverter planetConverter;
+    private final TradeRouteConverter tradeRouteConverter;
+    private final FactionConverter factionConverter;
+    private final CampaignConverter campaignConverter;
+    private final UnitConverter unitConverter;
 
     public GameEntitiesStore(DATLoader datLoader, XMLCampaignLoader campaignParser, XMLGameObjectLoader gameObjectParser, XMLFactionLoader factionParser, XMLTradeRouteLoader tradeRouteParser) {
         planetConverter = new PlanetConverter(datLoader);
@@ -54,13 +54,9 @@ public class GameEntitiesStore implements GameEntities {
 
         List<Planet> ps = gameObjectParser.getPlanets();
         for (Planet p : ps) {
-            try {
-                MPlanet mPlanet = planetConverter.toMPlanet(p);
-                planets.add(mPlanet);
-                xmlNamePlanet.put(mPlanet.getXmlName(), mPlanet);
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-            }
+            MPlanet mPlanet = planetConverter.toMPlanet(p);
+            planets.add(mPlanet);
+            xmlNamePlanet.put(mPlanet.getXmlName(), mPlanet);
         }
 
         tradeRouteConverter = new TradeRouteConverter(datLoader, xmlNamePlanet);
@@ -110,7 +106,6 @@ public class GameEntitiesStore implements GameEntities {
             uniqueUnits.add(unit);
             xmlNameUnit.put(unit.getXmlName(), unit);
         }
-
 
 
         campaignConverter = new CampaignConverter(datLoader, xmlNamePlanet, xmlNameFaction, xmlNameRoute, xmlNameUnit);

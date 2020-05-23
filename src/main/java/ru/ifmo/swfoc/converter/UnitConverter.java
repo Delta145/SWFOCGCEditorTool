@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class UnitConverter {
-    private DATLoader datLoader;
-    private Map<String, MFaction> xmlNameFaction;
+public class UnitConverter extends Converter {
+    private final DATLoader datLoader;
+    private final Map<String, MFaction> xmlNameFaction;
 
     public UnitConverter(DATLoader datLoader, Map<String, MFaction> factions) {
         this.datLoader = datLoader;
@@ -27,10 +27,10 @@ public class UnitConverter {
         if (unit.getFaction() != null) {
             String[] factions = unit.getFaction().trim().split(",");
             for (String faction : factions) {
-                factionList.add(xmlNameFaction.get(faction.trim()));
+                factionList.add(xmlNameFaction.get(cnv(faction)));
             }
         }
 
-        return new MUnit(name, unit.getXmlName(), factionList);
+        return new MUnit(name, unit.getXmlName().toUpperCase(), factionList);
     }
 }
