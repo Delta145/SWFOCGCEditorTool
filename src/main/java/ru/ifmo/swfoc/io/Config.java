@@ -14,7 +14,7 @@ public class Config {
     private String propertiesPath;
     private File dataMinerFile;
     private XMLDataMinerLoader xmlDataMinerLoader;
-    private String swfocSourcesDir;
+    private String gameSourcesDir;
     private String modSourcesDir;
     private String swfocXmlDir;
     private String modXmlDir;
@@ -33,14 +33,17 @@ public class Config {
         logger.info("Loading properties...");
         try (InputStream input = new FileInputStream(propertiesPath)) {
             Properties prop = new Properties();
-
             prop.load(input);
 
-            swfocSourcesDir = prop.getProperty("swfoc.dir");
+            if (prop.getProperty("default.swfoc").equalsIgnoreCase("true"))
+                gameSourcesDir = prop.getProperty("swfoc.dir");
+            else
+                gameSourcesDir = prop.getProperty("sweaw.dir");
+
             modSourcesDir = prop.getProperty("mod.dir");
 
-            swfocXmlDir = swfocSourcesDir + findFileIgnoreCase("xml", swfocSourcesDir).getName() + "/";
-            swfocTextDir = swfocSourcesDir + findFileIgnoreCase("text", swfocSourcesDir).getName() + "/";
+            swfocXmlDir = gameSourcesDir + findFileIgnoreCase("xml", gameSourcesDir).getName() + "/";
+            swfocTextDir = gameSourcesDir + findFileIgnoreCase("text", gameSourcesDir).getName() + "/";
             try {
                 modXmlDir = modSourcesDir + findFileIgnoreCase("xml", modSourcesDir).getName() + "/";
                 modTextDir = modSourcesDir + findFileIgnoreCase("text", modSourcesDir).getName() + "/";
@@ -51,10 +54,11 @@ public class Config {
             String dataMinerFileName = prop.getProperty("swfoc.dataminerfiles");
 
             String master = prop.getProperty("mastertext");
-            masterTextFile = new File(modTextDir + master);
-            if (!masterTextFile.exists()) {
+            if (modTextDir != null)
+                masterTextFile = findFileIgnoreCase(master, modTextDir);
+            if (modTextDir == null || !masterTextFile.exists()) {
                 logger.warn("Master file for mod was not found, trying load it from swfoc sources");
-                masterTextFile = new File(swfocTextDir + master);
+                masterTextFile = findFileIgnoreCase(master, swfocTextDir);
                 if (!masterTextFile.exists())
                     throw new FileNotFoundException("Master file couldn't be loaded");
             }

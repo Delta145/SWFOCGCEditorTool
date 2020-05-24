@@ -33,8 +33,8 @@ public class CampaignConverter extends Converter {
     public MCampaign toMCampaign(Campaign campaign, String filename) {
         MCampaign.MCampaignBuilder b = MCampaign.builder();
 
-        String campaignName = datLoader.getInGameName(campaign.getText_ID().trim());
-        String description = datLoader.getInGameName(campaign.getDescription_Text().trim());
+        String campaignName = datLoader.getInGameName(campaign.getText_ID());
+        String description = datLoader.getInGameName(campaign.getDescription_Text());
 
         MFaction activePlayer = null;
         if (validStr(campaign.getStarting_Active_Player()))
