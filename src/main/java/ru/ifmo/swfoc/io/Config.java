@@ -16,6 +16,10 @@ public class Config {
     private XMLDataMinerLoader xmlDataMinerLoader;
     private String swfocSourcesDir;
     private String modSourcesDir;
+    private String swfocXmlDir;
+    private String modXmlDir;
+    private String swfocTextDir;
+    private String modTextDir;
     private File masterTextFile;
 
 
@@ -32,14 +36,25 @@ public class Config {
 
             prop.load(input);
 
-            swfocSourcesDir = prop.getProperty("swfoc.xml");
-            modSourcesDir = prop.getProperty("mod.xml");
+            swfocSourcesDir = prop.getProperty("swfoc.dir");
+            modSourcesDir = prop.getProperty("mod.dir");
+
+            swfocXmlDir = swfocSourcesDir + findFileIgnoreCase("xml", swfocSourcesDir).getName() + "/";
+            swfocTextDir = swfocSourcesDir + findFileIgnoreCase("text", swfocSourcesDir).getName() + "/";
+            try {
+                modXmlDir = modSourcesDir + findFileIgnoreCase("xml", modSourcesDir).getName() + "/";
+                modTextDir = modSourcesDir + findFileIgnoreCase("text", modSourcesDir).getName() + "/";
+            } catch (FileNotFoundException e) {
+                logger.warn("XML or TEXT dir for mod wasn't found");
+            }
+
             String dataMinerFileName = prop.getProperty("swfoc.dataminerfiles");
 
-            masterTextFile = new File(prop.getProperty("mod.mastertext"));
+            String master = prop.getProperty("mastertext");
+            masterTextFile = new File(modTextDir + master);
             if (!masterTextFile.exists()) {
                 logger.warn("Master file for mod was not found, trying load it from swfoc sources");
-                masterTextFile = new File(prop.getProperty("swfoc.mastertext"));
+                masterTextFile = new File(swfocTextDir + master);
                 if (!masterTextFile.exists())
                     throw new FileNotFoundException("Master file couldn't be loaded");
             }
@@ -54,10 +69,10 @@ public class Config {
 
     public File getFileForName(String filename) throws FileNotFoundException {
         try {
-            return findFileIgnoreCase(filename, modSourcesDir);
+            return findFileIgnoreCase(filename, modXmlDir);
         } catch (FileNotFoundException e) {
             logger.warn("File {} was not found in {}, trying load it from swfoc sources", filename, modSourcesDir);
-            return findFileIgnoreCase(filename, swfocSourcesDir);
+            return findFileIgnoreCase(filename, swfocXmlDir);
         }
     }
 

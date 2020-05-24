@@ -59,7 +59,7 @@ public class GameEntitiesStore implements GameEntities {
             xmlNamePlanet.put(mPlanet.getXmlName(), mPlanet);
         }
 
-        tradeRouteConverter = new TradeRouteConverter(datLoader, xmlNamePlanet);
+        tradeRouteConverter = new TradeRouteConverter(xmlNamePlanet);
         List<TradeRoute> trs = tradeRouteParser.readAllTradeRouteFiles();
         for (TradeRoute t : trs) {
             MTradeRoute mTradeRoute = tradeRouteConverter.toMTradeRoute(t);

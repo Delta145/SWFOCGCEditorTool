@@ -10,7 +10,7 @@ import java.util.Map;
 public class TradeRouteConverter extends Converter {
     private final Map<String, MPlanet> planets;
 
-    public TradeRouteConverter(DATLoader datLoader, Map<String, MPlanet> planets) {
+    public TradeRouteConverter(Map<String, MPlanet> planets) {
         this.planets = planets;
     }
 

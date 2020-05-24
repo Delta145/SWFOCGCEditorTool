@@ -138,7 +138,7 @@ public class XMLGameObjectLoader {
             if (allowAdd)
                 updateAfterAll.add(new Pair<>(gameObject, unit));
             else
-                logger.warn("Unable to update unit {} from parent unit {}!", unit.getXmlName(), parentUnitName);
+                logger.warn("Unable to update unit {} from parent unit {}", unit.getXmlName(), parentUnitName);
         }
     }
 }
