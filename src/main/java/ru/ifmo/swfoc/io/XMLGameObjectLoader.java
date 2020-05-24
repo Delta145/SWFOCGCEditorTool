@@ -1,6 +1,8 @@
 package ru.ifmo.swfoc.io;
 
 import lombok.Data;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -22,6 +24,9 @@ import java.util.Map;
 
 @Data
 public class XMLGameObjectLoader {
+
+    private static final Logger logger = LogManager.getLogger(XMLGameObjectLoader.class);
+
     private Config config;
     private File processingFile;
     private Map<String, Unit> xmlNameUnit = new HashMap<>();
@@ -133,7 +138,7 @@ public class XMLGameObjectLoader {
             if (allowAdd)
                 updateAfterAll.add(new Pair<>(gameObject, unit));
             else
-                System.err.println("Unable to update unit " + unit.getXmlName() +  " from parent unit " + gameObject.getText());
+                logger.warn("Unable to update unit {} from parent unit {}!", unit.getXmlName(), gameObject.getText());
         }
     }
 }

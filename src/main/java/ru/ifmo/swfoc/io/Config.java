@@ -3,9 +3,14 @@ package ru.ifmo.swfoc.io;
 
 import java.io.*;
 import java.util.Properties;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Config {
+
+    private static final Logger logger = LogManager.getLogger(Config.class);
+
     private String propertiesPath;
     private File dataMinerFile;
     private XMLDataMinerLoader xmlDataMinerLoader;
@@ -21,7 +26,7 @@ public class Config {
     }
 
     private void loadProperties() {
-        System.out.println("Loading properties...");
+        logger.info("Loading properties...");
         try (InputStream input = new FileInputStream(propertiesPath)) {
             Properties prop = new Properties();
 
@@ -33,8 +38,10 @@ public class Config {
 
             masterTextFile = new File(prop.getProperty("mod.mastertext"));
             if (!masterTextFile.exists()) {
-                System.err.println("Master file for mod was not found, trying load it from swfoc sources");
+                logger.warn("Master file for mod was not found, trying load it from swfoc sources");
                 masterTextFile = new File(prop.getProperty("swfoc.mastertext"));
+                if (!masterTextFile.exists())
+                    throw new FileNotFoundException("Master file couldn't be loaded");
             }
 
             dataMinerFile = getFileForName(dataMinerFileName);
@@ -49,7 +56,7 @@ public class Config {
         try {
             return findFileIgnoreCase(filename, modSourcesDir);
         } catch (FileNotFoundException e) {
-            System.err.println(String.format("File %s was not found in %s, trying load it from swfoc sources", filename, modSourcesDir));
+            logger.warn("File {} was not found in {}, trying load it from swfoc sources", filename, modSourcesDir);
             return findFileIgnoreCase(filename, swfocSourcesDir);
         }
     }

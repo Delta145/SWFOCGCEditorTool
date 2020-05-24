@@ -21,7 +21,7 @@ public class MCampaignConverterTest {
         GameEntities gameEntitiesStore = editorCore.getGameEntitiesStore();
         List<MUnit> spaceUnits = gameEntitiesStore.getSpecialStructures();
         for (MUnit spaceUnit : spaceUnits) {
-            System.out.println(spaceUnit);
+//            System.out.println(spaceUnit);
         }
     }
 }

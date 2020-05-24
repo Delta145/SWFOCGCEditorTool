@@ -1,5 +1,7 @@
 package ru.ifmo.swfoc.io;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -15,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XMLCampaignLoader {
+
+    private static final Logger logger = LogManager.getLogger(XMLCampaignLoader.class);
+
     private Config config;
     private File processingFile;
 
@@ -44,8 +49,7 @@ public class XMLCampaignLoader {
                     campaigns.setFileName(campaignFileName);
                     campaignWrappers.add(campaigns);
                 } catch (JAXBException e) {
-//                    e.printStackTrace();
-                    System.err.println("Error on parsing "+campaignFileName);
+                    logger.error("Error on parsing {}. You must make sure what root xml element in the file is <Campaigns>!!!", campaignFileName);
                 }
 
             }

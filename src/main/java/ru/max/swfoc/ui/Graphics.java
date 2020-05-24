@@ -48,15 +48,15 @@ public class Graphics implements IGraphics{
 	private Combo isEdited;
 //	private ScrolledComposite listOfPlanets;
 	ScrolledComposite sfive;
-	private ScrolledComposite sccampaigns;	//ложится под listOfCampaigns для возможности прокрутки
-	private ScrolledComposite scrCamPlanets;	//ложится под camPlanetsList для возможности прокрутки
-	private ScrolledComposite scHumanVictoryConditions;	//ложится под humanVictoryConditions для возможности прокрутки
-	private ScrolledComposite scAiVictoryConditions;	//ложится под aiVictoryConditions для возможности прокрутки
-	private ScrolledComposite scSpecialCaseProduction;	//ложится под specialCaseProduction для возможности прокрутки
-	private ScrolledComposite scStartingForces;	//ложится под startingForces для возможности прокрутки
-	private ScrolledComposite scAllPlanets;	//ложится под allPlanets для возможности прокрутки
-	private ScrolledComposite scCamTradeRoutes;	//ложится под camTradeRoutesList для возможности прокрутки
-	private ScrolledComposite scForProperties;	//ложится под compositeForProperties для возможности прокрутки
+	private ScrolledComposite sccampaigns;	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ listOfCampaigns пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	private ScrolledComposite scrCamPlanets;	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ camPlanetsList пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	private ScrolledComposite scHumanVictoryConditions;	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ humanVictoryConditions пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	private ScrolledComposite scAiVictoryConditions;	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ aiVictoryConditions пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	private ScrolledComposite scSpecialCaseProduction;	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ specialCaseProduction пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	private ScrolledComposite scStartingForces;	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ startingForces пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	private ScrolledComposite scAllPlanets;	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ allPlanets пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	private ScrolledComposite scCamTradeRoutes;	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ camTradeRoutesList пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	private ScrolledComposite scForProperties;	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ compositeForProperties пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	private List humanVictoryConditions;	
 	private List aiVictoryConditions;
 	private List specialCaseProduction;
@@ -66,8 +66,8 @@ public class Graphics implements IGraphics{
 	private List listOfCampaigns;
 	private List camTradeRoutesList;
 	private MCampaign campaign;
-	private Composite compositeForProperties;	//самый правый большой блок для большинства свойств кампании
-	Composite factionPropertiesComposite = null;	//это блок внутри compositeForProperties который показывает таблицу с фракциями и некоторыми свойствами
+	private Composite compositeForProperties;	//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	Composite factionPropertiesComposite = null;	//пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ compositeForProperties пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	Text[] aicontrol;		
 	Text[] startingcred;
 	Text[] startingtech;
@@ -89,7 +89,7 @@ public class Graphics implements IGraphics{
 	    shell.setLayout(new FillLayout());
 		SashForm shellsash = new SashForm(shell, SWT.HORIZONTAL);
 		
-		Composite [] first3CompositesHorizontal = new Composite[3];	//деление окна на 3 части, правая для свойств
+		Composite [] first3CompositesHorizontal = new Composite[3];	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ 3 пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		for(int i = 0; i < 3; i++) {
 			first3CompositesHorizontal[i] = new Composite(shellsash, SWT.NONE);
 			first3CompositesHorizontal[i].setBackground(new Color(display, 12*i, 20 * i, 10* i));
@@ -97,7 +97,7 @@ public class Graphics implements IGraphics{
 		shellsash.setWeights(new int[] { 1, 3, 1 });	
 		SashForm sashForFirstComposite = new SashForm(first3CompositesHorizontal[0], SWT.VERTICAL);
 		first3CompositesHorizontal[0].setLayout(new FillLayout());
-		Composite[] left2VerticalComposites = new Composite[2];	//деление левой части на две вертикальные, сверху кампании, снизу планеты
+		Composite[] left2VerticalComposites = new Composite[2];	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		for(int i = 0; i < 2; i++) {
 			left2VerticalComposites[i] = new Composite(sashForFirstComposite, SWT.NONE);
 			left2VerticalComposites[i].setBackground(new Color(display, 100*i, 20 * i, 30* i));
@@ -105,7 +105,7 @@ public class Graphics implements IGraphics{
 		sashForFirstComposite.setWeights(new int[] { 1, 1 });
 		SashForm secondSashForSecondComposite = new SashForm(first3CompositesHorizontal[1], SWT.VERTICAL);
 		first3CompositesHorizontal[1].setLayout(new FillLayout());
-		Composite[] compositesOfSecondSash = new Composite[2];	//деление серединной части на две вертикальные, сверху будут планеты кампании, торговые пути и спец постройки, юниты планеты, снизу планируется окно для редактирования кампании
+		Composite[] compositesOfSecondSash = new Composite[2];	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		for(int i = 0; i < 2; i++) {
 			compositesOfSecondSash[i] = new Composite(secondSashForSecondComposite, SWT.NONE);
 			compositesOfSecondSash[i].setBackground(new Color(display, 100*i+50, 50 * i, 30* i+100));
@@ -113,7 +113,7 @@ public class Graphics implements IGraphics{
 		secondSashForSecondComposite.setWeights(new int[] { 4, 2 });
 		SashForm sashForCenterTopComposite = new SashForm(compositesOfSecondSash[0], SWT.HORIZONTAL);
 		compositesOfSecondSash[0].setLayout(new FillLayout());
-		Composite[] compositesOfTopCenterSash = new Composite[2];	//деление серединной верхней части на левую - планеты кампании и правую что далее разделится на тороговые пути, юниты и спец постройки
+		Composite[] compositesOfTopCenterSash = new Composite[2];	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		for(int i = 0; i < 2; i++) {
 			compositesOfTopCenterSash[i] = new Composite(sashForCenterTopComposite, SWT.NONE);
 			compositesOfTopCenterSash[i].setBackground(new Color(display, 100*i+50, 50 * i+40, 30* i+100));
@@ -122,7 +122,7 @@ public class Graphics implements IGraphics{
 		
 		SashForm sashForTopCenterRightComposite = new SashForm(compositesOfTopCenterSash[1], SWT.VERTICAL);
 		compositesOfTopCenterSash[1].setLayout(new FillLayout());
-		Composite[] compositesVerticalOfTopCenterRight = new Composite[2];	//деление серединной верхней части что осталась справа после предыдущего деления на нижнюю для юнитов и верхнюю для последущего деления на торговые пути и спецпостройки
+		Composite[] compositesVerticalOfTopCenterRight = new Composite[2];	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		for(int i = 0; i < 2; i++) {
 			compositesVerticalOfTopCenterRight[i] = new Composite(sashForTopCenterRightComposite, SWT.NONE);
 			compositesVerticalOfTopCenterRight[i].setBackground(new Color(display, 200*i+50, 50 * i+40, 30* i+100));
@@ -131,7 +131,7 @@ public class Graphics implements IGraphics{
 		
 		SashForm sashForMostLittle2HorizontalTopCenterComposites = new SashForm(compositesVerticalOfTopCenterRight[0], SWT.HORIZONTAL);
 		compositesVerticalOfTopCenterRight[0].setLayout(new FillLayout());
-		Composite[] mostLittleCompositesTopCenterRight = new Composite[2];	//торговые пути и спецпостройки
+		Composite[] mostLittleCompositesTopCenterRight = new Composite[2];	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		for(int i = 0; i < 2; i++) {
 			mostLittleCompositesTopCenterRight[i] = new Composite(sashForMostLittle2HorizontalTopCenterComposites, SWT.NONE);
 			mostLittleCompositesTopCenterRight[i].setBackground(new Color(display, 200*i+50, 50 * i+100, 30* i+100));
@@ -568,7 +568,7 @@ public class Graphics implements IGraphics{
 						    	} 
 						    
 			        }catch(ArrayIndexOutOfBoundsException e) {
-			        	System.out.println("Вышел за пределы списка кампаний");
+			        	System.out.println("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 			        }
 			        	
 			        
@@ -579,7 +579,7 @@ public class Graphics implements IGraphics{
 				}
 			});
 		
-		allPlanets.addSelectionListener(new SelectionListener() {	//при нажатии на элемент списка планет
+		allPlanets.addSelectionListener(new SelectionListener() {	//пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		      public void widgetSelected(SelectionEvent event)  {
 		    	  int[] selectedItems = allPlanets.getSelectionIndices();
 		    	  try {
@@ -607,7 +607,7 @@ public class Graphics implements IGraphics{
 					   }
 					    scStartingForces.setMinSize(startingForces.computeSize(SWT.DEFAULT, SWT.DEFAULT));  
 		    	  } catch(ArrayIndexOutOfBoundsException e){
-		    		  System.out.println("Вышел за пределы списка планет");
+		    		  System.out.println("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 		    	  }
 		   }
 
@@ -617,7 +617,7 @@ public class Graphics implements IGraphics{
 			}
 		      });
 		
-		camPlanetsList.addSelectionListener(new SelectionListener() {	//при нажатии на элемент списка всех планет
+		camPlanetsList.addSelectionListener(new SelectionListener() {	//пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		      public void widgetSelected(SelectionEvent event)   {
 		    	  int[] selectedItems = camPlanetsList.getSelectionIndices();
 		    	 try {
@@ -645,7 +645,7 @@ public class Graphics implements IGraphics{
 					    }
 					    scStartingForces.setMinSize(startingForces.computeSize(SWT.DEFAULT, SWT.DEFAULT));  
 		    	 }catch(ArrayIndexOutOfBoundsException e) {
-		    		 System.out.println("Вышел за пределы списка планет кампании");
+		    		 System.out.println("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 		    	 }
 		      }
 			@Override

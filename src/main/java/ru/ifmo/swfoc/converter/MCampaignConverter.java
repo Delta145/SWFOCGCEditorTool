@@ -1,12 +1,18 @@
 package ru.ifmo.swfoc.converter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.ifmo.swfoc.editor.model.*;
+import ru.ifmo.swfoc.io.Config;
 import ru.ifmo.swfoc.xmltoobject.campaign.Campaign;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class MCampaignConverter {
+
+    private static final Logger logger = LogManager.getLogger(MCampaignConverter.class);
+
     public Campaign toCampaign(MCampaign mCampaign) {
         Campaign.CampaignBuilder b = Campaign.builder();
 
@@ -14,12 +20,10 @@ public class MCampaignConverter {
         if (mCampaign.getIsMultiplayer() != null && mCampaign.getIsMultiplayer())
             is_Multiplayer = "Yes";
 
-        List<String> planetNames = null;
-        try {
-            planetNames = mCampaign.getLocations().stream().map(MPlanet::getXmlName).collect(Collectors.toList());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        List<String> planetNames = mCampaign.getLocations()
+                .stream()
+                .map(MPlanet::getXmlName)
+                .collect(Collectors.toList());
         String locations = convertFromListToStr(planetNames);
 
         List<String> startingForces = null;
@@ -31,8 +35,8 @@ public class MCampaignConverter {
                 for (FactionUnit factionUnit : factionUnits) {
                     try {
                         startingForces.add(factionUnit.getOwner().getXmlName() + ", " + mPlanet.getXmlName() + ", " + factionUnit.getUnit().getXmlName());
-                    } catch (Exception e) {
-                        System.err.println("Error on adding starting unit");
+                    } catch (NullPointerException e) {
+                        logger.warn("Unable to add starting unit {}", factionUnit.toString());
                     }
                 }
             }
@@ -47,8 +51,7 @@ public class MCampaignConverter {
                     try {
                         homeLocations.add(mFaction.getXmlName() + ", " + mCampaign.getHomeLocations().get(mFaction).getXmlName());
                     } catch (NullPointerException e) {
-                        System.err.println();
-                        e.printStackTrace();
+                        logger.warn("Unable to add home location");
                     }
                 }
         }
@@ -75,32 +78,27 @@ public class MCampaignConverter {
 
         String showCompleteTab = null;
         Boolean showCompletedTabBoolean = mCampaign.getShowCompletedTab();
-        if (showCompletedTabBoolean != null) {
+        if (showCompletedTabBoolean != null)
             if (showCompletedTabBoolean)
                 showCompleteTab = "True";
-            else {
+            else
                 showCompleteTab = "False";
-            }
-        }
 
         String supportCustomSettings = null;
         Boolean supportCustomSettingsBoolean = mCampaign.getSupportsCustomSettings();
-        if (supportCustomSettingsBoolean != null) {
+        if (supportCustomSettingsBoolean != null)
             if (supportCustomSettingsBoolean)
                 supportCustomSettings = "True";
-            else {
+            else
                 supportCustomSettings = "False";
-            }
-        }
 
         List<String> markupFiles = null;
         Map<MFaction, String> markupFilesMap = mCampaign.getMarkupFiles();
         if (markupFilesMap != null) {
             markupFiles = new ArrayList<>();
             Set<MFaction> mFactions = markupFilesMap.keySet();
-            for (MFaction mFaction : mFactions) {
+            for (MFaction mFaction : mFactions)
                 markupFiles.add(mFaction.getXmlName() + ", " + markupFilesMap.get(mFaction));
-            }
         }
 
         List<String> startingTech = convertMapToList(mCampaign.getStartingTech());
@@ -121,10 +119,9 @@ public class MCampaignConverter {
             Set<MPlanet> mPlanets = specialCaseProductionMap.keySet();
             for (MPlanet mPlanet : mPlanets) {
                 List<FactionUnit> factionUnits = specialCaseProductionMap.get(mPlanet);
-                for (FactionUnit factionUnit : factionUnits) {
+                for (FactionUnit factionUnit : factionUnits)
                     specialCaseProduction.add(factionUnit.getOwner().getXmlName() + ", "
                             + mPlanet.getXmlName() + ", " + factionUnit.getUnit().getXmlName());
-                }
             }
         }
 
