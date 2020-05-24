@@ -1,5 +1,7 @@
 package ru.ifmo.swfoc.converter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.ifmo.swfoc.editor.model.*;
 import ru.ifmo.swfoc.io.DATLoader;
 import ru.ifmo.swfoc.xmltoobject.campaign.Campaign;
@@ -7,6 +9,9 @@ import ru.ifmo.swfoc.xmltoobject.campaign.Campaign;
 import java.util.*;
 
 public class CampaignConverter extends Converter {
+
+    private static final Logger logger = LogManager.getLogger(CampaignConverter.class);
+
     private final DATLoader datLoader;
     private final Map<String, MPlanet> planets;
     private final Map<String, MFaction> factions;
@@ -135,13 +140,13 @@ public class CampaignConverter extends Converter {
         Map<MPlanet, List<FactionUnit>> factionUnitMap = new HashMap<>();
         if (campaign.getStarting_Forces() != null) {
             List<String> starting_forces = campaign.getStarting_Forces();
-            fillUnitMap(factionUnitMap, starting_forces);
+            fillUnitMap(factionUnitMap, starting_forces, campaign.getName());
         }
 
         Map<MPlanet, List<FactionUnit>> specialCaseProduction = new HashMap<>();
         if (campaign.getSpecial_Case_Production() != null) {
             List<String> special_case_production = campaign.getSpecial_Case_Production();
-            fillUnitMap(specialCaseProduction, special_case_production);
+            fillUnitMap(specialCaseProduction, special_case_production, campaign.getName());
         }
 
 
@@ -179,14 +184,16 @@ public class CampaignConverter extends Converter {
         return b.build();
     }
 
-    private void fillUnitMap(Map<MPlanet, List<FactionUnit>> unitMap, List<String> unitList) {
+    private void fillUnitMap(Map<MPlanet, List<FactionUnit>> unitMap, List<String> unitList, String campaignName) {
         for (String s : unitList) {
             String[] factionPlanetUnit = s.split(",");
             FactionUnit factionUnit = new FactionUnit(units.get(cnv(factionPlanetUnit[2])), factions.get(cnv(factionPlanetUnit[0])));
             MPlanet planet = planets.get(cnv(factionPlanetUnit[1]));
 
-            if (factionUnit.getUnit() == null)
-                return;
+            if (factionUnit.getUnit() == null) {
+                logger.warn("Unable to find unit {} for planet - {} [campaign={}]", cnv(factionPlanetUnit[2]), cnv(factionPlanetUnit[1]), campaignName);
+                continue;
+            }
 
             List<FactionUnit> list = unitMap.computeIfAbsent(planet, k -> new ArrayList<>());
             list.add(factionUnit);

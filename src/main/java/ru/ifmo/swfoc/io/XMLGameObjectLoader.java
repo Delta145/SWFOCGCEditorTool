@@ -82,23 +82,23 @@ public class XMLGameObjectLoader {
                             break;
                         case "UniqueUnit":
 //                            if (!isSpecial)
-                                uniqueUnits.add(new Unit(xmlName, textId, factions, true));
+                                uniqueUnits.add(unit);
                             break;
                         case "SpaceUnit":
 //                            if (!isSpecial)
-                                spaceUnits.add(new Unit(xmlName, textId, factions, true));
+                                spaceUnits.add(unit);
                             break;
                         case "SpecialStructure":
-                            specialStructures.add(new Unit(xmlName, textId, factions, isSpecial));
+                            specialStructures.add(unit);
                             break;
                         case "GroundCompany":
-                            groundCompanies.add(new Unit(xmlName, textId, factions, isSpecial));
+                            groundCompanies.add(unit);
                             break;
                         case "StarBase":
-                            starBases.add(new Unit(xmlName, textId, factions, isSpecial));
+                            starBases.add(unit);
                             break;
                         case "HeroCompany":
-                            heroCompanies.add(new Unit(xmlName, textId, factions, isSpecial));
+                            heroCompanies.add(unit);
                             break;
                         case "Planet":
                             addPlanet(gameObjectFile);
@@ -109,7 +109,6 @@ public class XMLGameObjectLoader {
 
             for (Pair<Element, Unit> u : updateAfterAll)
                 updateUnitOfExistingType(u.getFirst(), u.getSecond(), false);
-
         } catch (IOException | JDOMException io) {
             System.out.println(io.getMessage());
         }
@@ -128,8 +127,9 @@ public class XMLGameObjectLoader {
     }
 
     private void updateUnitOfExistingType(Element gameObject, Unit unit, boolean allowAdd) {
+        String parentUnitName = gameObject.getText().trim().toUpperCase();
         try {
-            Unit parentUnit = xmlNameUnit.get(gameObject.getText().trim().toUpperCase());
+            Unit parentUnit = xmlNameUnit.get(parentUnitName);
             if (unit.getFaction() == null)
                 unit.setFaction(parentUnit.getFaction());
             if (unit.getTextId() == null)
@@ -138,7 +138,7 @@ public class XMLGameObjectLoader {
             if (allowAdd)
                 updateAfterAll.add(new Pair<>(gameObject, unit));
             else
-                logger.warn("Unable to update unit {} from parent unit {}!", unit.getXmlName(), gameObject.getText());
+                logger.warn("Unable to update unit {} from parent unit {}!", unit.getXmlName(), parentUnitName);
         }
     }
 }
