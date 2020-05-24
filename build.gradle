@@ -9,6 +9,15 @@ plugins {
     id 'java'
 }
 
+task fatJar(type: Jar) {
+    manifest {
+        attributes  'Main-Class': 'ru.ifmo.swfoc.Main'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+    with jar
+}
+
 configurations.all {
     resolutionStrategy {
         dependencySubstitution {
@@ -30,7 +39,6 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
     // https://mvnrepository.com/artifact/org.jdom/jdom2
     compile group: 'org.jdom', name: 'jdom2', version: '2.0.6'
 // https://mvnrepository.com/artifact/org.projectlombok/lombok
@@ -38,18 +46,27 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
     // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
     compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-// https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.swt.gtk.linux.x86_64
-    compile group: 'org.eclipse.platform', name: 'org.eclipse.swt.gtk.linux.x86_64', version: '3.114.0'
-
+    compile('javax.activation:activation:1.1')
+    compile('org.glassfish.jaxb:jaxb-runtime:2.3.1')
 
 // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.3'
 // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.3'
 
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    // Windows
+    // https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.swt.win32.win32.x86_64
+//    compile group: 'org.eclipse.platform', name: 'org.eclipse.swt.win32.win32.x86_64', version: '3.114.0'
+    compile group: 'org.eclipse.swt', name: 'org.eclipse.swt.win32.win32.x86', version: '4.3'
+
+
+    // Linux
+    // https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.swt.gtk.linux.x86_64
+//    compile group: 'org.eclipse.platform', name: 'org.eclipse.swt.gtk.linux.x86_64', version: '3.114.0'
 
 
 
-
-    implementation name: 'SWFOCDATReader-0.1'
+    compile name:'SWFOCDATReader-0.1'
 }
