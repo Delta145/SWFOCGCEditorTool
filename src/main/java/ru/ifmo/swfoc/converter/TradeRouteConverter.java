@@ -2,7 +2,6 @@ package ru.ifmo.swfoc.converter;
 
 import ru.ifmo.swfoc.editor.model.MPlanet;
 import ru.ifmo.swfoc.editor.model.MTradeRoute;
-import ru.ifmo.swfoc.io.DATLoader;
 import ru.ifmo.swfoc.xmltoobject.traderoute.TradeRoute;
 
 import java.util.Map;

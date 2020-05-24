@@ -69,11 +69,12 @@ public class Config {
 
     public File getFileForName(String filename) throws FileNotFoundException {
         try {
-            return findFileIgnoreCase(filename, modXmlDir);
+            if (modXmlDir != null)
+                return findFileIgnoreCase(filename, modXmlDir);
         } catch (FileNotFoundException e) {
             logger.warn("File {} was not found in {}, trying load it from swfoc sources", filename, modSourcesDir);
-            return findFileIgnoreCase(filename, swfocXmlDir);
         }
+        return findFileIgnoreCase(filename, swfocXmlDir);
     }
 
     File findFileIgnoreCase(String filename, String dir) throws FileNotFoundException {
