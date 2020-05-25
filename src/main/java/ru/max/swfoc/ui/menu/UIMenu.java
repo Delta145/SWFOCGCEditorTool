@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import ru.max.swfoc.ui.Graphics;
@@ -39,10 +40,15 @@ public class UIMenu {
 			    		try {
 			    			graphics.getEditor().setGameEntitiesStore(graphics.getGameEntities());
 							graphics.getEditor().saveCampaignsToDirectory(new File(nameDir));
+							MessageBox messageBox = new MessageBox (shell, SWT.APPLICATION_MODAL | SWT.OK);
+				    		messageBox.setText ("Уведомление от системы");
+				    		messageBox.setMessage ("Сохранеие прошло успешно");
+				    		messageBox.open();
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
+			    		
 			    	}
 			    	    
 			    	
