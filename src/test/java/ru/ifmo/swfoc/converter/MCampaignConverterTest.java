@@ -17,7 +17,7 @@ public class MCampaignConverterTest {
         Config config = new Config("settings.properties");
         EditorCore editorCore = new EditorCore(config);
 
-        editorCore.saveCampaignsToDirectory(new File("/home/gosha/Downloads"));
+      //  editorCore.saveCampaignsToDirectory(new File("/home/gosha/Downloads"));
         GameEntities gameEntitiesStore = editorCore.getGameEntitiesStore();
         List<MCampaign> campaigns = gameEntitiesStore.getCampaigns();
         for (MCampaign campaign : campaigns) {

@@ -12,9 +12,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Config config = new Config("settings.properties");
         EditorCore editorCore = new EditorCore(config);
-
-        GameEntities gameEntitiesStore = editorCore.getGameEntitiesStore();
-        Window win = new Window(new Graphics(gameEntitiesStore));
+        Window win = new Window(new Graphics(editorCore));
         win.run();
     }
 }

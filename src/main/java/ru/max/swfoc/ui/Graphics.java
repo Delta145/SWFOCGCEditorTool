@@ -19,14 +19,17 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import lombok.Data;
+import ru.ifmo.swfoc.editor.EditorCore;
 import ru.ifmo.swfoc.editor.GameEntities;
 import ru.ifmo.swfoc.editor.model.FactionUnit;
 import ru.ifmo.swfoc.editor.model.MCampaign;
 import ru.ifmo.swfoc.editor.model.MPlanet;
 import ru.max.swfoc.ui.menu.UIMenu;
-
+@Data
 public class Graphics implements IGraphics{
 	private GameEntities gameEntities;
+	private EditorCore editor;
 	private Text filename;
 	private Text xmlName;
 	private Text name;
@@ -76,16 +79,18 @@ public class Graphics implements IGraphics{
 	Text[] markupfiles;
 	Label[] lfactions;
 	
-	public Graphics(GameEntities gameEntities){
-		this.gameEntities = gameEntities;
+	public Graphics(EditorCore editor){
+		this.gameEntities = editor.getGameEntitiesStore();
+		this.editor = editor;
 		
 	}
 	
 	@Override
 	public void launchUI(Display display, Shell shell) {
-		UIMenu uimenu = new UIMenu(shell);
+		UIMenu uimenu = new UIMenu(shell, this);
 	
 	//	UIToolMenu uitoolmenu = new UIToolMenu(shell);
+		
 	    shell.setLayout(new FillLayout());
 		SashForm shellsash = new SashForm(shell, SWT.HORIZONTAL);
 		

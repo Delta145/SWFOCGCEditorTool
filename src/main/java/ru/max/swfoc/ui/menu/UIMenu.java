@@ -1,15 +1,21 @@
 package ru.max.swfoc.ui.menu;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
+import ru.max.swfoc.ui.Graphics;
+
 public class UIMenu {
 	
-	public UIMenu(Shell shell){
+	public UIMenu(Shell shell, Graphics graphics){
 		 Menu menuBar = new Menu(shell, SWT.BAR);
 		  
 		  Menu fileMenu = new Menu(menuBar);
@@ -22,6 +28,26 @@ public class UIMenu {
 		   openItem.setText("Open...");
 		   MenuItem saveItem = new MenuItem(fileMenu, SWT.NONE);
 		   saveItem.setText("Save");
+		   saveItem.setText("Save\tCtrl+S");
+		   saveItem.setAccelerator (SWT.MOD1 + 'S');
+		   saveItem.addListener (SWT.Selection, new Listener () {
+			    @Override
+			    public void handleEvent (Event e) {
+			    	DirectoryDialog fd = new DirectoryDialog(shell, SWT.OPEN);
+			    	String nameDir = fd.open();
+			    	if (nameDir != null) {
+			    		try {
+			    			graphics.getEditor().setGameEntitiesStore(graphics.getGameEntities());
+							graphics.getEditor().saveCampaignsToDirectory(new File(nameDir));
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+			    	}
+			    	    
+			    	
+			    }
+			});
 		   MenuItem exitItem = new MenuItem(fileMenu, SWT.NONE);
 		   exitItem.setText("Exit\tCtrl+Q");
 		   exitItem.setAccelerator (SWT.MOD1 + 'Q');
