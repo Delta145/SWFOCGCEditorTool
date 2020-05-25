@@ -41,8 +41,8 @@ public class UIMenu {
 			    			graphics.getEditor().setGameEntitiesStore(graphics.getGameEntities());
 							graphics.getEditor().saveCampaignsToDirectory(new File(nameDir));
 							MessageBox messageBox = new MessageBox (shell, SWT.APPLICATION_MODAL | SWT.OK);
-				    		messageBox.setText ("Уведомление от системы");
-				    		messageBox.setMessage ("Сохранеие прошло успешно");
+				    		messageBox.setText ("РЈРІРµРґРѕРјР»РµРЅРёРµ РѕС‚ СЃРёСЃС‚РµРјС‹");
+				    		messageBox.setMessage ("РЎРѕС…СЂР°РЅРµРЅРёРµ РїСЂРѕС€Р»Рѕ СѓСЃРїРµС€РЅРѕ");
 				    		messageBox.open();
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
@@ -70,7 +70,7 @@ public class UIMenu {
 		   languageItem.setText("Language");
 		   languageItem.setMenu(languageMenu);
 		   MenuItem rusLangItem = new MenuItem(languageMenu, SWT.NONE);
-		   rusLangItem.setText("Русский");
+		   rusLangItem.setText("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 		   MenuItem engLangItem = new MenuItem(languageMenu, SWT.NONE);
 		   engLangItem.setText("English");
 		   
