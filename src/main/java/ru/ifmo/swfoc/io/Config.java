@@ -35,11 +35,7 @@ public class Config {
             Properties prop = new Properties();
             prop.load(input);
 
-            if (prop.getProperty("default.swfoc").equalsIgnoreCase("true"))
-                gameSourcesDir = prop.getProperty("swfoc.dir");
-            else
-                gameSourcesDir = prop.getProperty("sweaw.dir");
-
+            gameSourcesDir = prop.getProperty("swfoc.dir");
             modSourcesDir = prop.getProperty("mod.dir");
 
             swfocXmlDir = gameSourcesDir + findFileIgnoreCase("xml", gameSourcesDir).getName() + "/";
@@ -72,6 +68,7 @@ public class Config {
     }
 
     public File getFileForName(String filename) throws FileNotFoundException {
+        logger.debug("Loading file {}...", filename);
         try {
             if (modXmlDir != null)
                 return findFileIgnoreCase(filename, modXmlDir);

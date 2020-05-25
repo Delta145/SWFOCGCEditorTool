@@ -1,7 +1,6 @@
 package ru.ifmo.swfoc;
 
 import ru.ifmo.swfoc.editor.EditorCore;
-import ru.ifmo.swfoc.editor.GameEntities;
 import ru.ifmo.swfoc.io.Config;
 import ru.max.swfoc.ui.Graphics;
 import ru.max.swfoc.ui.Window;
