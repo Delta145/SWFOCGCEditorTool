@@ -3,10 +3,10 @@ package ru.ifmo.swfoc.io;
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import ru.ifmo.swfoc.util.Pair;
 import ru.ifmo.swfoc.xmltoobject.Unit;
 import ru.ifmo.swfoc.xmltoobject.planet.Planet;
@@ -15,6 +15,9 @@ import ru.ifmo.swfoc.xmltoobject.planet.PlanetWrapper;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,7 +41,7 @@ public class XMLGameObjectLoader {
     private List<Unit> heroCompanies = new ArrayList<>();
     private List<Unit> uniqueUnits = new ArrayList<>();
     private List<Planet> planets = new ArrayList<>();
-    private List<Pair<Element, Unit>> updateAfterAll = new ArrayList<>();
+    private List<Pair<String, Unit>> updateAfterAll = new ArrayList<>();
 
     public XMLGameObjectLoader(File file, Config config) {
         processingFile = file;
@@ -46,47 +49,54 @@ public class XMLGameObjectLoader {
     }
 
     public void readAllGameObjects() {
-        SAXBuilder builder = new SAXBuilder();
-
         try {
-            Document document = builder.build(processingFile);
-            Element rootNode = document.getRootElement();
-            List<Element> list = rootNode.getChildren();
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(processingFile);
+            NodeList listFiles = doc.getElementsByTagName("File");
 
-            for (Element node : list) {
-                String gameObjectFileName = node.getValue();
+            for (int i = 0; i < listFiles.getLength(); i++) {
+                String gameObjectFileName = listFiles.item(i).getFirstChild().getNodeValue();
                 File gameObjectFile = config.getFileForName(gameObjectFileName);
 
-                Document gameObjectDoc = builder.build(gameObjectFile);
-                Element rootNodeGameObject = gameObjectDoc.getRootElement();
-                List<Element> listGameObject = rootNodeGameObject.getChildren();
+                Document gameObjectDoc = dBuilder.parse(gameObjectFile);
+                Node someChild = gameObjectDoc.getFirstChild();
+                while (someChild.getNodeType() == Node.COMMENT_NODE)
+                    someChild = someChild.getNextSibling();
+                NodeList listGameObject = someChild.getChildNodes();
 
                 nextFile:
-                for (Element gameObject : listGameObject) {
-                    if (gameObject.getAttribute("Name").getValue().contains("Death_Clone"))
+                for (int j = 0; j < listGameObject.getLength(); j++) {
+                    Node gameObject = listGameObject.item(j);
+                    if (gameObject.getAttributes() == null)
                         continue;
-                    String xmlName = gameObject.getAttributeValue("Name").trim().toUpperCase();
-                    String factions = gameObject.getChildText("Affiliation");
-                    String textId = gameObject.getChildText("Text_ID");
-                    boolean isSpecial = (gameObject.getChildText("Ship_Class") != null && (gameObject.getChildText("Ship_Class").equalsIgnoreCase("fighter") || gameObject.getChildText("Ship_Class").equalsIgnoreCase("bomber")))
-                            || gameObject.getChild("Build_Requires_Initial_Placement") != null;
-                    Element variantOfExistingType = gameObject.getChild("Variant_Of_Existing_Type");
+                    String name = gameObject.getAttributes().getNamedItem("Name").getNodeValue();
+                    if (name.contains("Death_Clone"))
+                        continue;
+                    String xmlName = gameObject.getAttributes().getNamedItem("Name").getNodeValue().trim().toUpperCase();
+                    String factions = getChildText(gameObject, "Affiliation");
+                    String textId = getChildText(gameObject, "Text_ID");
+
+                    String shipClass = getChildText(gameObject, "Ship_Class");
+                    boolean isSpecial = (shipClass != null && (shipClass.equalsIgnoreCase("fighter") || shipClass.equalsIgnoreCase("bomber")))
+                            || getChildText(gameObject, "Build_Requires_Initial_Placement") != null;
+                    String variantOfExistingType = getChildText(gameObject, "Variant_Of_Existing_Type");
 
                     Unit unit = new Unit(xmlName, textId, factions, isSpecial);
                     if (variantOfExistingType != null)
                         updateUnitOfExistingType(variantOfExistingType, unit, true);
                     xmlNameUnit.put(xmlName, unit);
-                    switch (gameObject.getName()) {
+                    switch (gameObject.getNodeName()) {
                         case "Squadron":
                             squadrons.add(unit);
                             break;
                         case "UniqueUnit":
 //                            if (!isSpecial)
-                                uniqueUnits.add(unit);
+                            uniqueUnits.add(unit);
                             break;
                         case "SpaceUnit":
 //                            if (!isSpecial)
-                                spaceUnits.add(unit);
+                            spaceUnits.add(unit);
                             break;
                         case "SpecialStructure":
                             specialStructures.add(unit);
@@ -107,9 +117,9 @@ public class XMLGameObjectLoader {
                 }
             }
 
-            for (Pair<Element, Unit> u : updateAfterAll)
+            for (Pair<String, Unit> u : updateAfterAll)
                 updateUnitOfExistingType(u.getFirst(), u.getSecond(), false);
-        } catch (IOException | JDOMException io) {
+        } catch (IOException | ParserConfigurationException | SAXException io) {
             System.out.println(io.getMessage());
         }
     }
@@ -126,8 +136,8 @@ public class XMLGameObjectLoader {
         }
     }
 
-    private void updateUnitOfExistingType(Element gameObject, Unit unit, boolean allowAdd) {
-        String parentUnitName = gameObject.getText().trim().toUpperCase();
+    private void updateUnitOfExistingType(String gameObject, Unit unit, boolean allowAdd) {
+        String parentUnitName = gameObject.trim().toUpperCase();
         try {
             Unit parentUnit = xmlNameUnit.get(parentUnitName);
             if (unit.getFaction() == null)
@@ -140,5 +150,14 @@ public class XMLGameObjectLoader {
             else
                 logger.warn("Unable to update unit {} from parent unit {}", unit.getXmlName(), parentUnitName);
         }
+    }
+
+    private String getChildText(Node node, String childName) {
+        NodeList childNodes = node.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            if (childNodes.item(i).getNodeName().equalsIgnoreCase(childName) && childNodes.item(i).getFirstChild() != null)
+                return childNodes.item(i).getFirstChild().getNodeValue();
+        }
+        return null;
     }
 }

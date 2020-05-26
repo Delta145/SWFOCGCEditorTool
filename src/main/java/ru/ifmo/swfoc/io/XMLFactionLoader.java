@@ -1,16 +1,17 @@
 package ru.ifmo.swfoc.io;
 
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
-import ru.ifmo.swfoc.xmltoobject.campaign.CampaignWrapper;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import ru.ifmo.swfoc.xmltoobject.faction.Faction;
 import ru.ifmo.swfoc.xmltoobject.faction.FactionWrapper;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,30 +28,29 @@ public class XMLFactionLoader {
     public List<Faction> readAllFactionFiles() {
         List<Faction> factions = new ArrayList<>();
 
-        SAXBuilder builder = new SAXBuilder();
 
         try {
-            Document document = builder.build(processingFile);
-            Element rootNode = document.getRootElement();
-            List<Element> list = rootNode.getChildren();
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(processingFile);
+            NodeList listFiles = doc.getElementsByTagName("File");
 
-            for (Element node : list) {
-                String campaignFileName = node.getValue();
-                File campaignFile = config.getFileForName(campaignFileName);
+            for (int i = 0; i < listFiles.getLength(); i++) {
+                String factionFileName = listFiles.item(i).getFirstChild().getNodeValue();
+                File factionFile = config.getFileForName(factionFileName);
                 JAXBContext jaxbContext;
                 try {
                     jaxbContext = JAXBContext.newInstance(FactionWrapper.class);
                     Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                    FactionWrapper factionWrapper = (FactionWrapper) jaxbUnmarshaller.unmarshal(campaignFile);
+                    FactionWrapper factionWrapper = (FactionWrapper) jaxbUnmarshaller.unmarshal(factionFile);
                     factions.addAll(factionWrapper.getFactions());
                 } catch (JAXBException e) {
                     e.printStackTrace();
                 }
-
             }
 
-        } catch (IOException | JDOMException io) {
-            System.out.println(io.getMessage());
+        } catch (IOException | ParserConfigurationException | SAXException io) {
+            System.err.println(io.getMessage());
         }
 
         return factions;

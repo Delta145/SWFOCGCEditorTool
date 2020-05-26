@@ -1,13 +1,14 @@
 package ru.ifmo.swfoc.io;
 
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public class XMLDataMinerLoader {
     private final File processingFile;
@@ -39,18 +40,20 @@ public class XMLDataMinerLoader {
     }
 
     private String getFilenameForType(String type) {
-        SAXBuilder builder = new SAXBuilder();
 
         try {
-            Document document = builder.build(processingFile);
-            Element rootNode = document.getRootElement();
-            List<Element> list = rootNode.getChildren();
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(processingFile);
+            NodeList listFiles = doc.getElementsByTagName("File");
 
-            for (Element node : list)
-                if (node.getAttribute(typeAttribute).getValue().equals(type))
-                    return node.getAttribute(filenameAttribute).getValue();
+            for (int i = 0; i < listFiles.getLength(); i++) {
+                String typeFile = listFiles.item(i).getAttributes().getNamedItem(typeAttribute).getNodeValue();
+                if (typeFile.equals(type))
+                    return listFiles.item(i).getAttributes().getNamedItem(filenameAttribute).getNodeValue();
+            }
 
-        } catch (IOException | JDOMException io) {
+        } catch (IOException | ParserConfigurationException | SAXException io) {
             System.out.println(io.getMessage());
         }
         return null;

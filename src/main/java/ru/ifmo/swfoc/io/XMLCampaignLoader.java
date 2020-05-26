@@ -2,19 +2,22 @@ package ru.ifmo.swfoc.io;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import ru.ifmo.swfoc.xmltoobject.campaign.CampaignWrapper;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class XMLCampaignLoader {
 
@@ -31,15 +34,14 @@ public class XMLCampaignLoader {
     public List<CampaignWrapper> readAllCampaignFiles() {
         List<CampaignWrapper> campaignWrappers = new ArrayList<>();
 
-        SAXBuilder builder = new SAXBuilder();
-
         try {
-            Document document = builder.build(processingFile);
-            Element rootNode = document.getRootElement();
-            List<Element> list = rootNode.getChildren();
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(processingFile);
+            NodeList listFiles = doc.getElementsByTagName("File");
 
-            for (Element node : list) {
-                String campaignFileName = node.getValue();
+            for (int i = 0; i < listFiles.getLength(); i++) {
+                String campaignFileName = listFiles.item(i).getFirstChild().getNodeValue();
                 File campaignFile = config.getFileForName(campaignFileName);
                 JAXBContext jaxbContext;
                 try {
@@ -54,7 +56,7 @@ public class XMLCampaignLoader {
 
             }
 
-        } catch (IOException | JDOMException io) {
+        } catch (IOException | SAXException | ParserConfigurationException io) {
             System.out.println(io.getMessage());
         }
 
